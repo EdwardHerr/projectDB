@@ -31,7 +31,7 @@ CREATE TABLE Carts(
 
 );
 
-CREATE TABLE orders (
+CREATE TABLE Orders (
   orderID            INT(11)        NOT NULL   AUTO_INCREMENT,
   username     VARCHAR(255)   NOT NULL FOREIGN KEY REFERENCES Users(username),
   orderDate          DATETIME       NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE orders (
   PRIMARY KEY (orderID)
   );
   
-  CREATE TABLE creditCards (
+  CREATE TABLE CreditCards (
   username    VARCHAR(255)   NOT NULL FOREIGN KEY REFERENCES Users(username),
   firstName         VARCHAR(255)   NOT NULL,
   lastName          VARCHAR(255)   NOT NULL,
