@@ -2,43 +2,30 @@ import React from 'react';
 
 export default function Login() {
   return (
-    <div className='container'>
+    <div className='container login'>
       <h1>Welcome back!</h1>
-
       <form>
-        <div class='mb-3'>
-          <label for='exampleInputEmail1' class='form-label'>
-            Email address
+        <div className='mb-3'>
+          <label for='username' className='form-label'>
+            Username
           </label>
-          <input
-            type='email'
-            class='form-control'
-            id='exampleInputEmail1'
-            aria-describedby='emailHelp'
-          />
-          <div id='emailHelp' class='form-text'>
-            We'll never share your email with anyone else.
-          </div>
+          <input type='text' className='form-control' id='username' aria-describedby='emailHelp' />
         </div>
-        <div class='mb-3'>
-          <label for='exampleInputPassword1' class='form-label'>
+        <div className='mb-3'>
+          <label for='exampleInputPassword1' className='form-label'>
             Password
           </label>
-          <input type='password' class='form-control' id='exampleInputPassword1' />
+          <input type='password' className='form-control' id='exampleInputPassword1' />
         </div>
-        <div class='mb-3 form-check'>
-          <input type='checkbox' class='form-check-input' id='exampleCheck1' />
-          <label class='form-check-label' for='exampleCheck1'>
-            Check me out
-          </label>
+        <div className='d-sm-flex justify-content-sm-center align-items-center'>
+          <p className='text-center lead px-4 gap-3'>
+            Don't have an account? Register <a href='#'>here</a>
+          </p>
+          <button type='submit' className='btn btn-primary btn-lg px-4 gap-3'>
+            Login
+          </button>
         </div>
-        <button type='submit' class='btn btn-primary'>
-          Submit
-        </button>
       </form>
-      <p>
-        Register <a href='#'>here</a>
-      </p>
     </div>
   );
 }

@@ -1,9 +1,9 @@
-import Home from './Components/Home';
-import Navbar from './Components/Navbar';
-import Login from './Components/Login';
-import Register from './Components/Register';
-import MenuItem from './Components/MenuItem';
-import './App.css';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import Register from './components/Register';
+import MenuItem from './components/MenuItem';
+import './styles/App.css';
 function App() {
   const myItems = [
     {
@@ -19,10 +19,10 @@ function App() {
   return (
     <div className='App'>
       <Navbar />
-      {/* <Home /> */}
-      {/* <Login /> */}
-      {/* <Register /> */}
-      <MenuItem items={myItems} />;
+      <Home />
+      <Login />
+      <Register />
+      <MenuItem items={myItems} />
     </div>
   );
 }
