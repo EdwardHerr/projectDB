@@ -1,15 +1,15 @@
 import React from 'react';
 
-export default function Navbar() {
+export default function Navbar({ loggedIn }) {
   return (
-    <div>
-      <nav class='navbar navbar-expand-lg bg-light'>
-        <div class='container-fluid'>
-          <a class='navbar-brand' href='#'>
+    <div className='mb-5'>
+      <nav className='navbar navbar-expand-lg bg-light'>
+        <div className='container-fluid'>
+          <a className='navbar-brand' href='/'>
             Logo
           </a>
           <button
-            class='navbar-toggler'
+            className='navbar-toggler'
             type='button'
             data-bs-toggle='collapse'
             data-bs-target='#navbarSupportedContent'
@@ -17,51 +17,59 @@ export default function Navbar() {
             aria-expanded='false'
             aria-label='Toggle navigation'
           >
-            <span class='navbar-toggler-icon'></span>
+            <span className='navbar-toggler-icon'></span>
           </button>
-          <div class='collapse navbar-collapse' id='navbarSupportedContent'>
-            <ul class='navbar-nav me-auto mb-2 mb-lg-0'>
-              <li class='nav-item'>
-                <a class='nav-link active' aria-current='page' href='#'>
+          <div className='collapse navbar-collapse' id='navbarSupportedContent'>
+            <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
+              <li className='nav-item'>
+                <a className='nav-link active' aria-current='page' href='/'>
                   Home
                 </a>
               </li>
-              <li class='nav-item'>
-                <a class='nav-link' href='#'>
+              <li className='nav-item'>
+                <a className='nav-link' href='/menu'>
                   Menu
                 </a>
               </li>
-              <li class='nav-item dropdown'>
-                <a
-                  class='nav-link dropdown-toggle'
-                  href='#'
-                  role='button'
-                  data-bs-toggle='dropdown'
-                  aria-expanded='false'
-                >
-                  My Account
-                </a>
-                <ul class='dropdown-menu'>
-                  <li>
-                    <a class='dropdown-item' href='#'>
-                      Past Orders
-                    </a>
-                  </li>
-                  <li>
-                    <a class='dropdown-item' href='#'>
-                      Preferences
-                    </a>
-                  </li>
-                  <li>
-                    <hr class='dropdown-divider' />
-                  </li>
-                  <li>
-                    <a class='dropdown-item' href='#'>
-                      Log Out
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              {loggedIn ? (
+                <li className='nav-item dropdown'>
+                  <a
+                    className='nav-link dropdown-toggle'
+                    href='#'
+                    role='button'
+                    data-bs-toggle='dropdown'
+                    aria-expanded='false'
+                  >
+                    My Account
+                  </a>
+                  <ul className='dropdown-menu'>
+                    <li>
+                      <a className='dropdown-item' href='/orders'>
+                        Past Orders
+                      </a>
+                    </li>
+                    <li>
+                      <a className='dropdown-item' href='/preferences'>
+                        Preferences
+                      </a>
+                    </li>
+                    <li>
+                      <hr className='dropdown-divider' />
+                    </li>
+                    <li>
+                      <a className='dropdown-item' href='/logout'>
+                        Log Out
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              ) : (
+                <li className='nav-item'>
+                  <a className='nav-link' aria-current='page' href='/login'>
+                    Login
+                  </a>
+                </li>
+              )}
             </ul>
           </div>
         </div>

@@ -17,9 +17,9 @@ export default function Login() {
           </label>
           <input type='password' className='form-control' id='exampleInputPassword1' />
         </div>
-        <div className='d-sm-flex justify-content-sm-center align-items-center'>
+        <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>
           <p className='text-center lead px-4 gap-3'>
-            Don't have an account? Register <a href='#'>here</a>
+            Don't have an account? Register <a href='/register'>here.</a>
           </p>
           <button type='submit' className='btn btn-primary btn-lg px-4 gap-3'>
             Login

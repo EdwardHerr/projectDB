@@ -10,8 +10,12 @@ export default function Home() {
           impedit hic aliquid labore doloremque molestias laboriosam!
         </p>
         <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>
-          <button className='btn btn-primary btn-lg px-4 gap-3'>Login</button>
-          <button className='btn btn-outline-secondary btn-lg px-4'>Register</button>
+          <a href='/login' className='btn btn-primary btn-lg px-4 gap-3'>
+            Login
+          </a>
+          <a href='/register' className='btn btn-outline-secondary btn-lg px-4'>
+            Register
+          </a>
         </div>
       </div>
     </div>

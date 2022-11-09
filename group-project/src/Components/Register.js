@@ -58,9 +58,14 @@ export default function Register() {
             <input type='password' class='form-control' id='confirmPassword' />
           </div>
         </div>
-        <button type='submit' class='btn btn-primary btn-lg px-4'>
-          Submit
-        </button>
+        <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>
+          <button type='submit' class='btn btn-primary btn-lg px-4'>
+            Submit
+          </button>
+          <a href='/' class='btn btn-outline-secondary btn-lg px-4'>
+            Back
+          </a>
+        </div>
       </form>
     </div>
   );

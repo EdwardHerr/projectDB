@@ -1,9 +1,13 @@
+import { React, useState } from 'react';
+import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Register from './components/Register';
-import MenuItem from './components/MenuItem';
+import Menu from './components/Menu';
 import './styles/App.css';
+import Orders from './components/Orders';
+import Preferences from './components/Preferences';
 function App() {
   const myItems = [
     {
@@ -16,13 +20,38 @@ function App() {
     },
   ];
 
+  const [loggedIn, setLoggedIn] = useState(true);
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Home />,
+    },
+    {
+      path: '/login',
+      element: <Login />,
+    },
+    {
+      path: '/register',
+      element: <Register />,
+    },
+    {
+      path: '/menu',
+      element: <Menu loggedIn={loggedIn} />,
+    },
+    {
+      path: '/orders',
+      element: <Orders />,
+    },
+    {
+      path: '/preferences',
+      element: <Preferences />,
+    },
+  ]);
+
   return (
     <div className='App'>
-      <Navbar />
-      <Home />
-      <Login />
-      <Register />
-      <MenuItem items={myItems} />
+      <Navbar loggedIn={loggedIn} />
+      <RouterProvider router={router} />
     </div>
   );
 }
