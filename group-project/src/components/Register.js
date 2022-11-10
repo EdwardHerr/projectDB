@@ -4,7 +4,7 @@ export default function Register() {
   return (
     <div className='container register'>
       <h1>Register</h1>
-      <form className='g-2'>
+      <form className='g-2' method='POST' action='?action=register'>
         <div class='mb-3'>
           <div class='mb-3'>
             <label for='username' class='form-label'>
