@@ -1,6 +1,7 @@
 -- create and select the database
 DROP DATABASE IF EXISTS e_commerce;
 CREATE DATABASE e_commerce;
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'pa55word';
 USE e_commerce;  -- MySQL command
 
 -- create the tables
