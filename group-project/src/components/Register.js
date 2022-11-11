@@ -1,68 +1,90 @@
-import React from 'react';
+import { React, useState } from 'react';
+import axios from 'axios'
 
 export default function Register() {
+  
+  const [userData, setUserData] = useState([])
+  
+  const handleChange = (event) => {
+    const name = event.target.id 
+    const value = event.target.value
+    setUserData(values => ({
+      ...values, [name]: value
+    }))
+  }
+  
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    console.log(userData)
+    axios.post('register', userData).then(function(res) {
+      console.log(res.data)
+    })
+  }
+  
   return (
     <div className='container register'>
       <h1>Register</h1>
-      <form className='g-2' method='POST' action='?action=register'>
-        <div class='mb-3'>
-          <div class='mb-3'>
-            <label for='username' class='form-label'>
+      <form className='g-2' onSubmit={handleSubmit}>
+        <div className='mb-3'>
+          <div className='mb-3'>
+            <label htmlFor='username' className='form-label'>
               Username
             </label>
-            <input type='text' class='form-control' id='username' aria-describedby='usernameHelp' />
+            <input type='text' className='form-control' id='username' aria-describedby='usernameHelp' onChange={handleChange}/>
           </div>
           <div className='name-forms col row'>
-            <div class='mb-3 col-md'>
-              <label for='firstName' class='form-label'>
+            <div className='mb-3 col-md'>
+              <label htmlFor='firstName' className='form-label'>
                 First Name
               </label>
               <input
                 type='text'
-                class='form-control'
+                className='form-control'
                 id='firstName'
                 aria-describedby='firstNameHelp'
+                onChange={handleChange}
               />
             </div>
-            <div class='mb-3 col-md'>
-              <label for='lastName' class='form-label'>
+            <div className='mb-3 col-md'>
+              <label htmlFor='lastName' className='form-label'>
                 Last Name
               </label>
               <input
                 type='text'
-                class='form-control'
+                className='form-control'
                 id='lastName'
                 aria-describedby='lastNameHelp'
+                onChange={handleChange}
               />
             </div>
           </div>
-          <label for='inputEmail' class='form-label'>
+          <label htmlFor='inputEmail' className='form-label'>
             Email address
           </label>
-          <input type='email' class='form-control' id='inputEmail' aria-describedby='emailHelp' />
-          <div id='emailHelp' class='form-text col-md'>
+          <input type='email' className='form-control' id='inputEmail' aria-describedby='emailHelp' onChange={handleChange}/>
+          <div id='emailHelp' className='form-text col-md'>
             We'll never share your email with anyone else.
           </div>
         </div>
         <div className='password-forms row'>
-          <div class='mb-3 col-md'>
-            <label for='inputPassword' class='form-label'>
+          <div className='mb-3 col-md'>
+            <label htmlFor='inputPassword' className='form-label'>
               Password
             </label>
-            <input type='password' class='form-control' id='inputPassword' />
+            <input type='password' className='form-control' id='inputPassword' onChange={handleChange}/>
           </div>
-          <div class='mb-3 col-md'>
-            <label for='confirmPassword' class='form-label'>
+          <div className='mb-3 col-md'>
+            <label htmlFor='confirmPassword' className='form-label'>
               Confirm Password
             </label>
-            <input type='password' class='form-control' id='confirmPassword' />
+            <input type='password' className='form-control' id='confirmPassword' onChange={handleChange}/>
           </div>
         </div>
         <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>
-          <button type='submit' class='btn btn-primary btn-lg px-4'>
+          <button type='submit' className='btn btn-primary btn-lg px-4'>
             Submit
           </button>
-          <a href='/' class='btn btn-outline-secondary btn-lg px-4'>
+          <a href='/' className='btn btn-outline-secondary btn-lg px-4'>
             Back
           </a>
         </div>
