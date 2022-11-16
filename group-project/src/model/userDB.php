@@ -8,11 +8,17 @@ class userDB {
 	public $email;
 	public $password;
 	
-	function signup($POST) {
-
-		$DB = new Database();
+	public static function signUp() {
+		$db = Database::getDB();
 		$_SESSION['error'] = "";
-		if(isset($_POST['uName']) && isset($_POST['fName']) && isset($_POST['lName']) && isset($_POST['email']) && isset($_POST['password'])) {
+		$query = "INSERT INTO username, password, firstName
+							lastName, email
+					VALUES :username,:firstName,:lastName,
+					:password,:email";
+					
+		if(isset($_POST['uName']) && isset($_POST['fName']) && 
+		isset($_POST['lName']) && isset($_POST['email']) 
+		&& isset($_POST['password'])) {
 		    $this->uName = $POST['uName'];
 			$this->fName = $POST['fName'];
 			$this->lName = $POST['lName'];
@@ -24,9 +30,7 @@ class userDB {
 			$arr['lName'] = $this->lName;
 			$arr['email'] = $this->email;
 			$arr['password'] = $this->password;
-
-			$query = "insert into user (userName,firstName,lastName,password,email) values (:uName,:fName,:lName,:password,:email)";
-
+			
 			$data = $DB->write($query,$arr);
 
 			if($data)
@@ -38,7 +42,7 @@ class userDB {
 				die;
 			}
 
-		}else{
+		} else {
 			$_SESSION['error'] = "something went wrong";
 		}
 	}
