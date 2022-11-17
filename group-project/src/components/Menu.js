@@ -27,8 +27,6 @@ export default function Menu({ loggedIn }) {
             </div>
           </div>
         </div>
-        
-        
       ) : (
         <p className='text-center'>You must be logged in to see the menu.</p>
       )}
