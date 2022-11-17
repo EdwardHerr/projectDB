@@ -1,6 +1,16 @@
 <?php
 
 class userDB {
+
+ private static function loadUser($row) {
+     $user = new User($row['username'],
+                      $row['password'],
+                      $row['firstName'],
+                      $row['lastName'],
+                      $row['email'],
+                      $row['address']);
+    return $user;
+ }
     
  public static function getUser($username) {
         $db = Database::getDB();
@@ -16,7 +26,7 @@ class userDB {
             $row = $statement->fetch();
             $statement->closeCursor();
             
-            return $username;
+            return self::loadUser($row);
         } catch (PDOException $e) {
             Database::displayError($e->getMessage());
         }
