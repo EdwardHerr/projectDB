@@ -1,13 +1,19 @@
 <?php
 class User {
-    public function __construct(
-        private string $username,
-        private string $password,
-        private string $firstname,
-        private string $lastname,
-        private string $email,
-        private string $address,
-    ) { }
+    private $username;
+    private $firstName;
+    private $lastName;
+    private $email;
+    private $password;
+    private $address = "";
+        
+    public function __construct($username, $firstName, $lastName, $email, $password) {
+        $this->username = $username;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
+        $this->email = $email;
+        $this->password = $password;
+    }
 
     public function getUserName() {
         return $this->username;

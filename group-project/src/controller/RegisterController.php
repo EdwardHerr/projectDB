@@ -28,9 +28,9 @@ class RegisterController {
             if (! $this->validatePerson($input)) {
                 return $this->unprocessableEntityResponse();
             }
-            $this->createPerson($input);
+            $res = $this->createPerson($input);
             $response['status_code_header'] = 'HTTP/1.1 201 Created';
-            $response['body'] = null;
+            $response['body'] = $res;
             return $response;
         }
         
@@ -74,11 +74,12 @@ class RegisterController {
     }
     
     private function createPerson($input) {
-        echo $input->username;
-        echo $input->firstName;
-        echo $input->lastName;
-        echo $input->inputEmail;
-        echo $input->inputPassword;
-        echo $input->confirmPassword;
-    }
+        $newUser = new User($input->username,
+                           $input->firstName,
+                           $input->lastName,
+                           $input->inputEmail,
+                           $input->inputPassword);
+        return UserDB::addUser($newUser);
+        // return $newUser->getUsername();
+    }   
 }

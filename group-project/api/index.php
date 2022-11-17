@@ -1,6 +1,11 @@
 <?php
     include('../src/controller/RegisterController.php');
-    // include('../src/controller/LoginController.php');
+    // require_once('../src/controller/LoginController.php');
+    include('../src/model/Database.php');
+    include('../src/model/User.php');
+    include('../src/model/UserDB.php');
+    // include('../src/model/Product.php');
+    // include('../src/model/ProductDB.php');
     
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -20,7 +25,7 @@
     }
     $method = $_SERVER['REQUEST_METHOD'];
 
-    // echo $endpoint;
+    echo $endpoint;
     
     switch($endpoint) {
         case "register":
