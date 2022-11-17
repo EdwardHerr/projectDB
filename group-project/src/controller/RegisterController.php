@@ -74,11 +74,12 @@ class RegisterController {
     }
     
     private function createPerson($input) {
-        newUser = new User(this->username,
-                           this->firstName,
-                           this->lastName,
-                           this->inputEmail,
-                           this->inputPassword);
-        UserDB::addUser(newUser);
+        $newUser = new User($input->username,
+                           $input->firstName,
+                           $input->lastName,
+                           $input->inputEmail,
+                           $input->inputPassword);
+        return UserDB::addUser($newUser);
+        // return $newUser->getUsername();
     }   
 }

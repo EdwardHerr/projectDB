@@ -39,7 +39,7 @@ class UserDB {
                      email, address)
                  VALUES
                     (:username, :password, :firstName, :lastName,
-                     :email, :address, NOW())';
+                     :email, :address)';
        try {
            $statement = $db->prepare($query);
            $statement->bindValue(':username', $user->getUserName());
@@ -52,7 +52,7 @@ class UserDB {
            $statement->closeCursor();
 
            
-           return $username;
+           return $user->getUserName();
        } catch (PDOException $e) {
            Database::displayError($e->getMessage());
        }

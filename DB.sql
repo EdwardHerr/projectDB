@@ -10,7 +10,7 @@ CREATE TABLE Users (
   firstName VARCHAR(255) NOT NULL,
   lastName VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  address VARCHAR(255) NOT NULL,
+  address VARCHAR(255),
   PRIMARY KEY (username)
 );
 CREATE TABLE Products (
@@ -54,7 +54,8 @@ CREATE TABLE CreditCards (
   FOREIGN KEY (username) REFERENCES Users(username)
 );
 -- create the users
-CREATE USER IF NOT EXISTS db_user @localhost IDENTIFIED BY 'pa55word';
+CREATE USER IF NOT EXISTS db_user@localhost IDENTIFIED BY 'pa55word';
+GRANT ALL PRIVILEGES ON * TO 'db_user'@'localhost';
 INSERT INTO Products
 VALUES (
     1,
