@@ -1,7 +1,6 @@
 -- create and select the database
 DROP DATABASE IF EXISTS e_commerce;
 CREATE DATABASE e_commerce;
-CREATE USER 'user'@'localhost' IDENTIFIED BY 'pa55word';
 USE e_commerce;  -- MySQL command
 
 -- create the tables
@@ -60,7 +59,11 @@ CREATE TABLE Orders (
   FOREIGN KEY (username) REFERENCES Users(username)
   );
   
-  INSERT INTO products VALUES
+  -- create the users
+CREATE USER IF NOT EXISTS db_user@localhost 
+IDENTIFIED BY 'pa55word';
+  
+  INSERT INTO Products VALUES
   (1, 'Chicken Alfredo', 'Pasta with grilled chicken and alfredo sauce', '24.99'),
   (2, 'Chicken Parmgiana', 'Two lightly fried parmesan-breaded chicken breasts are smothered with homemade marinara sauce and melted Italian cheeses', '23.79'),
   (3, 'Spaghetti and Meatballs', 'Classic spaghetti with bolognese sauce and meatballs', '21.99'),
