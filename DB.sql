@@ -6,7 +6,7 @@ USE e_commerce;  -- MySQL command
 
 -- create the tables
 CREATE TABLE Users (
-  username         VARCHAR(255) NOT NULL,
+  username         VARCHAR(255) NOT NULL UNIQUE,
   password         VARCHAR(255) NOT NULL,
   firstName        VARCHAR(255) NOT NULL,
   lastName         VARCHAR(255) NOT NULL,
@@ -23,14 +23,19 @@ CREATE TABLE Products (
   PRIMARY KEY (productID)
 );
 
-CREATE TABLE Carts(
+CREATE TABLE Users_Carts(
     username   VARCHAR(255)       NOT NULL,
-    productID        INT(11)      NOT NULL,
     cartID           INT(11)      NOT NULL,
     PRIMARY KEY (cartID, username),
-    FOREIGN KEY (username) REFERENCES Users(username),
-    FOREIGN KEY (productID) REFERENCES Products(productID)
+    FOREIGN KEY (username) REFERENCES Users(username)
+);
 
+CREATE TABLE Carts(
+    cartID           INT(11)      NOT NULL AUTO_INCREMENT,
+    productID        INT(11)      NOT NULL,
+    quantity         INT(11)      NOT NULL,
+    PRIMARY KEY (cartID, productID),
+    FOREIGN KEY (productID) REFERENCES Products(productID)
 );
 
 CREATE TABLE Orders (
@@ -53,6 +58,7 @@ CREATE TABLE Orders (
   billingAddresss   VARCHAR(255)   NOT NULL,
   PRIMARY KEY (username),
   FOREIGN KEY (username) REFERENCES Users(username)
+  );
   
   INSERT INTO products VALUES
   (1, 'Chicken Alfredo', 'Pasta with grilled chicken and alfredo sauce', '24.99'),
@@ -64,5 +70,4 @@ CREATE TABLE Orders (
   (7, 'Chicken and Shrimp Carbonara', 'Spaghetti and carbonara with bacon bits, grilled chicken and shrimp', '26.99'),
   (8, 'Ravioli Carbonara', 'Cheese ravioli baked in a creamy sauce with bacon, topped with a blend of Italian cheeses', '24.99'),
   (9, 'Chicken Tortelloni Alfredo', 'Asiago cheese-filled tortelloni baked in alfredo and toasted breadcrumbs, topped with sliced grilled chicken', '24.99'),
-  (10, 'Grilled Chicken Margherita', 'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce', '23.99'),
-  );
+  (10, 'Grilled Chicken Margherita', 'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce', '23.99');
