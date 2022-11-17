@@ -1,6 +1,11 @@
 <?php
-    include('../src/controller/RegisterController.php');
-    // include('../src/controller/LoginController.php');
+    require_once('../src/controller/RegisterController.php');
+    // require_once('../src/controller/LoginController.php');
+    require_once('../src/model/ecommerceDB.php');
+    require_once('../src/model/User.php');
+    require_once('../src/model/UserDB.php');
+    require_once('../src/model/Product.php');
+    require_once('../src/model/ProductDB.php');
     
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");

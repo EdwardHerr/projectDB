@@ -1,6 +1,6 @@
 <?php
 
-class userDB {
+class UserDB {
 
  private static function loadUser($row) {
      $user = new User($row['username'],
@@ -51,7 +51,7 @@ class userDB {
            $statement->execute();
            $statement->closeCursor();
 
-           // Get the last product ID that was automatically generated
+           
            return $username;
        } catch (PDOException $e) {
            Database::displayError($e->getMessage());
