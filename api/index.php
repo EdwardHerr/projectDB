@@ -27,15 +27,13 @@
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = explode('/', $uri);
     
-    if (!isset($uri[5])) {
+    if (!isset($uri[4])) {
         header("HTTP/1.1 404 Not Found");
         exit();
     } else {
-        $endpoint = $uri[5];
+        $endpoint = $uri[4];
     }
     $method = $_SERVER['REQUEST_METHOD'];
-
-    echo $endpoint;
     
     switch($endpoint) {
         case "register":
@@ -43,8 +41,8 @@
             $controller->processRequest();
             break;
         case "login":
-            // $controller = new LoginController($method);
-            // $controller->processRequest();
+            $controller = new LoginController($method);
+            $controller->processRequest();
             break;
         default:
             echo "invalid endpoint";

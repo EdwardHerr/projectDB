@@ -37,12 +37,11 @@ class LoginController {
         if (! isset($input->username)) {
             return false;
         }
-
-        $row = UserDB::getUser($input->username);
         if (! isset($input->inputPassword)) {
             return false;
         }
-        if ($row['password'] !== $input->inputPassword) {
+        $row = UserDB::getUser($input->username);
+        if ($input->inputPassword !== $row['password']) {
             return false;
         }
         return true;
@@ -50,8 +49,8 @@ class LoginController {
 
     private function invalidLoginResponse() {
         $response['status_code_header'] = 'HTTP/1.1 401 Unauthorized';
-        $response['body'] = json_encode([
-            'error' => 'Invalid login information'
+        $response['body'] = $response['body'] = json_encode([
+            'error' => 'Invalid login'
         ]);
         return $response;
     }

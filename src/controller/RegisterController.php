@@ -78,6 +78,6 @@ class RegisterController {
                            $input->inputEmail,
                            $input->inputPassword);
         return UserDB::addUser($newUser);
-        // return $newUser->getUsername();
+        // return "Registration successful!";
     }   
 }
