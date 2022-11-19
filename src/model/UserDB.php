@@ -54,10 +54,10 @@ class UserDB {
 
            
         //   return $user->getUserName();
-            return "Registration Successful";
+            return true;
        } catch (PDOException $e) {
         //   Database::displayError($e->getMessage());
-            return "Unable to add user";
+            return false;
        }
     }
     

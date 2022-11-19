@@ -27,17 +27,17 @@ class LoginController {
         if (! $this->validateLogin($input)) {
             return $this->invalidLoginResponse();
         }
-        $res = $this->loginSuccess($input);
+        $body = $this->loginSuccess();
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = $res;
+        $response['body'] = $body;
         return $response;
     }
 
     private function validateLogin($input) {
-        if (! isset($input->username)) {
+        if (! isset($input->username) || strlen($input->username) < 1) {
             return false;
         }
-        if (! isset($input->inputPassword)) {
+        if (! isset($input->inputPassword) || strlen($input->inputPassword) < 1) {
             return false;
         }
         $row = UserDB::getUser($input->username);
@@ -59,7 +59,7 @@ class LoginController {
         $_SESSION['login'] = true;
         $currUser = UserDB::getUser($input->username);
         $_SESSION['user'] = new User($currUser['username'], $currUser['firstName'], $currUser['lastName'], $currUser['email'], $currUser['address']);
-        return "Login successful";
+        return "Login Successful!";
     }
     private function notFoundResponse() {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';

@@ -1,5 +1,6 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Route } from 'react-router-dom';
+import axios from 'axios';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Login from './components/Login';
@@ -9,22 +10,16 @@ import './styles/App.css';
 import Orders from './components/Orders';
 import Preferences from './components/Preferences';
 function App() {
-  const myItems = [
-    {
-      item: 'burger',
-      price: 10.99,
-    },
-    {
-      item: 'pop',
-      price: 1.99,
-    },
-  ];
-
   const [loggedIn, setLoggedIn] = useState(true);
+  
+  useEffect(() => {
+    axios.get('session').then(res => setLoggedIn(res.data.login))
+  }, [loggedIn])
+  
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Home />,
+      element: <Home loggedIn={loggedIn}/>,
     },
     {
       path: '/login',

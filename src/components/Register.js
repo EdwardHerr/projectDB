@@ -8,8 +8,13 @@ export default function Register() {
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
+  const [registrationMessage, setRegistrationMessage] = useState("")
   
-  const [registrationMessage, setRegistrationMessage] = useState()
+  let  message = null
+  
+  useEffect(() => {
+    console.log(registrationMessage)
+  }, [registrationMessage])
   
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -21,12 +26,11 @@ export default function Register() {
       inputPassword: passwordRef.current.value,
       confirmPassword: passwordRef.current.value
     }
-    console.log(userData)
     axios.post('register', userData).then(function(res) {
-      if (res.status !== 201) {
-        setRegistrationMessage(curr => res.data.error)
-      } else {
-        setRegistrationMessage(curr => res.data)
+        setRegistrationMessage(res.data)
+    }).then(window.location.href = "/login").catch(function (err) {
+      if (err.response) {
+        setRegistrationMessage(err.response.data.error)
       }
     })
   }
@@ -34,7 +38,7 @@ export default function Register() {
   return (
     <div className='container register'>
       <h1>Register</h1>
-      {registrationMessage ? <h1>{registrationMessage}</h1> : <></> }
+      <h1>{registrationMessage}</h1>
       <form className='g-2' onSubmit={handleSubmit}>
         <div className='mb-3'>
           <div className='mb-3'>

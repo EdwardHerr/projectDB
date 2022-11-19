@@ -78,7 +78,7 @@ VALUES (
   ),
   (
     'Shrimp Scampi',
-    'Shrimp sautéed in a garlic sauce, tossed with asparagus, tomatoes and angel hair',
+    'Shrimp sauteed in a garlic sauce, tossed with asparagus, tomatoes and angel hair',
     24.29
   ),
   (

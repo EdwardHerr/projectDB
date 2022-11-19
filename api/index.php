@@ -3,7 +3,7 @@
     session_set_cookie_params($lifetime, '/');
     session_start();
     if (empty($_SESSION['login'])) {
-        $_SESSION['loggedIn'] = false;
+        $_SESSION['login'] = false;
     }
     if (empty($_SESSION['user'])) {
         $_SESSION['user'] = null;
@@ -11,11 +11,12 @@
 
     include('../src/controller/RegisterController.php');
     include('../src/controller/LoginController.php');
+    include('../src/controller/MenuController.php');
     include('../src/model/Database.php');
     include('../src/model/User.php');
     include('../src/model/UserDB.php');
     // include('../src/model/Product.php');
-    // include('../src/model/ProductDB.php');
+    include('../src/model/ProductDB.php');
     
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -42,6 +43,16 @@
             break;
         case "login":
             $controller = new LoginController($method);
+            $controller->processRequest();
+            break;
+        case "session":
+            echo json_encode($_SESSION);
+            break;
+        case "logout":
+            $_SESSION = [];
+            break;
+        case "products":
+            $controller = new MenuController($method);
             $controller->processRequest();
             break;
         default:

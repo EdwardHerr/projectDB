@@ -1,6 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 
 export default function Navbar({ loggedIn }) {
+  
+  const handleClick = () => {
+    axios.get("logout").then(window.location.href = "/")
+  }
+  
   return (
     <div className='mb-5'>
       <nav className='navbar navbar-expand-lg bg-light'>
@@ -57,9 +63,9 @@ export default function Navbar({ loggedIn }) {
                       <hr className='dropdown-divider' />
                     </li>
                     <li>
-                      <a className='dropdown-item' href='/logout'>
+                      <button className='dropdown-item' onClick={handleClick}>
                         Log Out
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </li>
