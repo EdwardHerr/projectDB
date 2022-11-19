@@ -37,5 +37,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost/projectDB/group-project/api/index.php"
+  "proxy": "http://localhost/projectDB/api/index.php"
 }
