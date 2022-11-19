@@ -1,6 +1,16 @@
 <?php
+    $lifetime = 60 * 60 * 24 * 14;    // 2 weeks in seconds
+    session_set_cookie_params($lifetime, '/');
+    session_start();
+    if (empty($_SESSION['login'])) {
+        $_SESSION['loggedIn'] = false;
+    }
+    if (empty($_SESSION['user'])) {
+        $_SESSION['user'] = null;
+    }
+
     include('../src/controller/RegisterController.php');
-    // require_once('../src/controller/LoginController.php');
+    include('../src/controller/LoginController.php');
     include('../src/model/Database.php');
     include('../src/model/User.php');
     include('../src/model/UserDB.php');

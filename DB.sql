@@ -20,17 +20,12 @@ CREATE TABLE Products (
   listPrice DECIMAL(10, 2),
   PRIMARY KEY (productID)
 );
-CREATE TABLE Users_Carts(
-  username VARCHAR(255) NOT NULL,
-  cartID INT(11) NOT NULL,
-  PRIMARY KEY (cartID, username),
-  FOREIGN KEY (username) REFERENCES Users(username)
-);
 CREATE TABLE Carts(
-  cartID INT(11) NOT NULL AUTO_INCREMENT,
+  cartID INT(11) NOT NULL,
+  username VARCHAR(255) NOT NULL,
   productID INT(11) NOT NULL,
   quantity INT(11) NOT NULL,
-  PRIMARY KEY (cartID, productID),
+  FOREIGN KEY (username) REFERENCES Users(username),
   FOREIGN KEY (productID) REFERENCES Products(productID)
 );
 CREATE TABLE Orders (
@@ -54,8 +49,8 @@ CREATE TABLE CreditCards (
   FOREIGN KEY (username) REFERENCES Users(username)
 );
 -- create the users
-CREATE USER IF NOT EXISTS db_user@localhost IDENTIFIED BY 'pa55word';
-GRANT ALL PRIVILEGES ON * TO 'db_user'@'localhost';
+CREATE USER IF NOT EXISTS db_user @localhost IDENTIFIED BY 'pa55word';
+GRANT ALL PRIVILEGES ON * TO 'db_user' @'localhost';
 INSERT INTO Products
 VALUES (
     1,
@@ -117,3 +112,44 @@ VALUES (
     'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce',
     '23.99'
   );
+-- create the users --
+INSERT INTO Users
+VALUES (
+    'testuser1',
+    'testpass1',
+    'John',
+    'Doe',
+    'johndoe@yahoo.com',
+    'Surrey BC, 123 Street, 1234'
+  ),
+  (
+    'testuser2',
+    'testpass2',
+    'Jane',
+    'Doe',
+    'janedoe@yahoo.com',
+    'Surrey BC, 321 Street, 4321'
+  );
+-- create the credit cards --
+INSERT INTO CreditCards (
+    'testuser1',
+    'John',
+    'Doe',
+    'Visa',
+    123456789012,
+    '2022-11-16',
+    'Surrey BC, 123 Street, 1234'
+  ),
+  (
+    'testuser2',
+    'Jane',
+    'Doe',
+    'Mastercard',
+    098765432123,
+    '2022-11-16',
+    'Surrey BC, 321 Street, 4321'
+  );
+-- Create example cart for user 1--
+INSERT INTO Carts
+VALUES (1, 'testuser1', 1, 1),
+  (1, 'testuser1', 2, 3);

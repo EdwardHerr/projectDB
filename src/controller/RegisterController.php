@@ -4,7 +4,6 @@ class RegisterController {
 
     public function __construct($requestMethod) {
         $this->requestMethod = $requestMethod;
-        // $this->personGateway = new PersonGateway($db);
     }
 
     public function processRequest() {
@@ -22,7 +21,6 @@ class RegisterController {
             echo $response['body'];
         }
     }
-
     private function createUserFromRequest() {
             $input = json_decode(file_get_contents('php://input'));
             if (! $this->validatePerson($input)) {
