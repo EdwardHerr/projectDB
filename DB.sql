@@ -5,134 +5,130 @@ USE e_commerce;
 -- MySQL command
 -- create the tables
 CREATE TABLE Users (
-  username VARCHAR(255) NOT NULL UNIQUE,
-  password VARCHAR(255) NOT NULL,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  address VARCHAR(255),
-  PRIMARY KEY (username)
+  id INT NOT NULL AUTO_INCREMENT,
+  username VARCHAR(30) NOT NULL UNIQUE,
+  password VARCHAR(30) NOT NULL,
+  firstName VARCHAR(30) NOT NULL,
+  lastName VARCHAR(30) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  address VARCHAR(255) DEFAULT "",
+  PRIMARY KEY (id)
 );
-CREATE TABLE Products (
-  productID INT(11) NOT NULL AUTO_INCREMENT,
-  productName VARCHAR(255) NOT NULL,
-  productDescription VARCHAR(255) NOT NULL,
-  listPrice DECIMAL(10, 2),
-  PRIMARY KEY (productID)
+CREATE TABLE Products(
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  listPrice FLOAT(2),
+  PRIMARY KEY (id)
 );
 CREATE TABLE Carts(
-  cartID INT(11) NOT NULL,
-  username VARCHAR(255) NOT NULL,
-  productID INT(11) NOT NULL,
-  quantity INT(11) NOT NULL,
-  FOREIGN KEY (username) REFERENCES Users(username),
-  FOREIGN KEY (productID) REFERENCES Products(productID)
-);
-CREATE TABLE Orders (
-  orderID INT(11) NOT NULL AUTO_INCREMENT,
-  username VARCHAR(255) NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
+  userID INT NOT NULL,
   orderDate DATETIME NOT NULL,
-  cartID INT(11) NOT NULL,
-  FOREIGN KEY (username) REFERENCES Users(username),
-  FOREIGN KEY (cartID) REFERENCES Carts(cartID),
-  PRIMARY KEY (orderID)
+  paid BOOLEAN NOT NULL DEFAULT FALSE,
+  FOREIGN KEY (userID) REFERENCES Users(id),
+  PRIMARY KEY (id)
 );
+CREATE TABLE Orders(
+  productID INT NOT NULL,
+  cartID INT NOT NULL,
+  quantity INT NOT NULL,
+  PRIMARY KEY(productID, cartID),
+  FOREIGN KEY (productID) REFERENCES Products(id),
+  FOREIGN KEY (cartID) REFERENCES Carts(id)
+);
+
 CREATE TABLE CreditCards (
-  username VARCHAR(255) NOT NULL,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
-  cardType VARCHAR(255) NOT NULL,
-  cardNumber INT(12) NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
+  userID INT NOT NULL,
+  firstName VARCHAR(30) NOT NULL,
+  lastName VARCHAR(30) NOT NULL,
+  cardType VARCHAR(20) NOT NULL,
+  cardNumber BIGINT NOT NULL,
   expiryDate DATETIME NOT NULL,
   billingAddresss VARCHAR(255) NOT NULL,
-  PRIMARY KEY (username),
-  FOREIGN KEY (username) REFERENCES Users(username)
+  FOREIGN KEY (userID) REFERENCES Users(id),
+  PRIMARY KEY (id)
 );
 -- create the users
 CREATE USER IF NOT EXISTS db_user @localhost IDENTIFIED BY 'pa55word';
 GRANT ALL PRIVILEGES ON * TO 'db_user' @'localhost';
-INSERT INTO Products
+
+-- insert products --
+INSERT INTO Products (name, description, listPrice)
 VALUES (
-    1,
     'Chicken Alfredo',
     'Pasta with grilled chicken and alfredo sauce',
-    '24.99'
+    24.99
   ),
   (
-    2,
     'Chicken Parmgiana',
     'Two lightly fried parmesan-breaded chicken breasts are smothered with homemade marinara sauce and melted Italian cheeses',
-    '23.79'
+    23.79
   ),
   (
-    3,
     'Spaghetti and Meatballs',
     'Classic spaghetti with bolognese sauce and meatballs',
-    '21.99'
+    21.99
   ),
   (
-    4,
     'Seafood Alfredo',
     'Fettuccine with creamy, alfredo sauce with shrimp and scallops',
-    '27.99'
+    27.99
   ),
   (
-    5,
     'Shrimp Scampi',
     'Shrimp sautéed in a garlic sauce, tossed with asparagus, tomatoes and angel hair',
-    '24.29'
+    24.29
   ),
   (
-    6,
     'Shrimp Alfredo',
     'Pasta with grilled shrimp and alfredo sauce',
-    '24.99'
+    24.99
   ),
   (
-    7,
     'Chicken and Shrimp Carbonara',
     'Spaghetti and carbonara with bacon bits, grilled chicken and shrimp',
-    '26.99'
+    26.99
   ),
   (
-    8,
     'Ravioli Carbonara',
     'Cheese ravioli baked in a creamy sauce with bacon, topped with a blend of Italian cheeses',
-    '24.99'
+    24.99
   ),
   (
-    9,
     'Chicken Tortelloni Alfredo',
     'Asiago cheese-filled tortelloni baked in alfredo and toasted breadcrumbs, topped with sliced grilled chicken',
-    '24.99'
+    24.99
   ),
   (
-    10,
     'Grilled Chicken Margherita',
     'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce',
-    '23.99'
+    23.99
   );
+  
 -- create the users --
-INSERT INTO Users
+INSERT INTO Users (username, firstName, lastName, email, password, address)
 VALUES (
     'testuser1',
-    'testpass1',
     'John',
     'Doe',
     'johndoe@yahoo.com',
+    'testpass1',
     'Surrey BC, 123 Street, 1234'
   ),
   (
     'testuser2',
-    'testpass2',
     'Jane',
     'Doe',
     'janedoe@yahoo.com',
+    'testpass2',
     'Surrey BC, 321 Street, 4321'
   );
 -- create the credit cards --
-INSERT INTO CreditCards (
-    'testuser1',
+INSERT INTO CreditCards (userID, firstName, lastName, cardType, cardNumber, expiryDate, billingAddresss)
+VALUES(
+    1,
     'John',
     'Doe',
     'Visa',
@@ -141,7 +137,7 @@ INSERT INTO CreditCards (
     'Surrey BC, 123 Street, 1234'
   ),
   (
-    'testuser2',
+    2,
     'Jane',
     'Doe',
     'Mastercard',
@@ -149,7 +145,31 @@ INSERT INTO CreditCards (
     '2022-11-16',
     'Surrey BC, 321 Street, 4321'
   );
--- Create example cart for user 1--
-INSERT INTO Carts
-VALUES (1, 'testuser1', 1, 1),
-  (1, 'testuser1', 2, 3);
+
+-- Create shopping carts--
+INSERT INTO Carts (userID, orderDate, paid)
+VALUES (1, '2022-11-19', 0),
+  (2, '2022-11-18', 1);
+
+INSERT INTO Orders (productID, cartID, quantity)
+VALUES (
+    1,
+    1,
+    2
+),
+(
+    2,
+    2,
+    10
+),
+(
+    4,
+    1,
+    3
+),
+(
+    3,
+    1,
+    1
+);
+
