@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-export default function Navbar({ loggedIn }) {
+export default function Navbar({ loggedIn, user }) {
   const logout = async () => {
     axios.get('logout').then((window.location.href = '/'));
   };

@@ -14,11 +14,12 @@ import Preferences from './components/Preferences';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(true);
+  const [user, setUser] = useState({});
 
   const fetchData = async () => {
     return axios.get('session').then((res) => {
       setLoggedIn(res.data.login);
-      console.log(res.data);
+      setUser(res.data.curr_user);
     });
   };
 
@@ -28,9 +29,9 @@ function App() {
 
   return (
     <div className='App'>
-      <Navbar loggedIn={loggedIn} />
+      <Navbar loggedIn={loggedIn} user={user} />
       <Routes>
-        <Route path='/' element={<Home loggedIn={loggedIn} />} />
+        <Route path='/' element={<Home loggedIn={loggedIn} user={user} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/menu' element={<Menu loggedIn={loggedIn} />} />

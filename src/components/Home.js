@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Home({ loggedIn }) {
+export default function Home({ loggedIn, user }) {
   if (loggedIn) {
     return (
       <div className='px-4 py-5 my-5 text-center'>
@@ -10,7 +10,7 @@ export default function Home({ loggedIn }) {
         />
         <h1 className='display-5 fw-bold'>E-Commerce Website</h1>
         <div className='col-lg-6 mx-auto'>
-          <h1>Welcome back!</h1>
+          <h1>Welcome back {user.firstName}!</h1>
         </div>
       </div>
     );

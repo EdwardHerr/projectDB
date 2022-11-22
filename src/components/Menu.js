@@ -1,4 +1,5 @@
 import { React, useEffect, useState } from 'react';
+import { Route } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Menu({ loggedIn }) {
@@ -6,7 +7,7 @@ export default function Menu({ loggedIn }) {
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
-    axios.get('products').then((res) => {
+    axios.get('menu').then((res) => {
       setItems([...res.data]);
     });
   };
@@ -43,7 +44,12 @@ export default function Menu({ loggedIn }) {
                       <p className='card-text text-end me-5'>{item.listPrice}</p>
                     </div>
                     <div className='card-footer bg-transparent'>
-                      <a className='mx-3' href='#' id={item.id} onClick={handleDetailsClick}>
+                      <a
+                        className='mx-3'
+                        href={'/menu/' + item.id}
+                        id={item.id}
+                        onClick={handleDetailsClick}
+                      >
                         Details
                       </a>
                       <a
