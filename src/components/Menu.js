@@ -1,5 +1,4 @@
 import { React, useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
 import axios from 'axios';
 
 export default function Menu({ loggedIn }) {
