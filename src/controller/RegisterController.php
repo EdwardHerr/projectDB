@@ -4,7 +4,6 @@ class RegisterController {
 
     public function __construct($requestMethod) {
         $this->requestMethod = $requestMethod;
-        // $this->personGateway = new PersonGateway($db);
     }
 
     public function processRequest() {
@@ -22,35 +21,42 @@ class RegisterController {
             echo $response['body'];
         }
     }
-
     private function createUserFromRequest() {
             $input = json_decode(file_get_contents('php://input'));
             if (! $this->validatePerson($input)) {
                 return $this->unprocessableEntityResponse();
             }
             $res = $this->createPerson($input);
-            $response['status_code_header'] = 'HTTP/1.1 201 Created';
-            $response['body'] = $res;
+            if ($res) {
+                $response['status_code_header'] = 'HTTP/1.1 201 Created';
+                $body = "Registration successful!";
+            } else {
+                $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
+                $body = json_encode([
+                    'error' => 'Unable to register account'
+                ]);
+            }
+            $response['body'] = $body;
             return $response;
         }
         
     private function validatePerson($input) {
-        if (! isset($input->username)) {
+        if (! isset($input->username) || strlen($input->username) < 1) {
             return false;
         }
-        if (! isset($input->firstName)) {
+        if (! isset($input->firstName) || strlen($input->firstName) < 1) {
             return false;
         }
-        if (! isset($input->lastName)) {
+        if (! isset($input->lastName) || strlen($input->lastName) < 1) {
             return false;
         }
-        if (! isset($input->inputEmail)) {
+        if (! isset($input->inputEmail) || strlen($input->inputEmail) < 1) {
             return false;
         }
-        if (! isset($input->inputPassword)) {
+        if (! isset($input->inputPassword) || strlen($input->inputPassword) < 1) {
             return false;
         }
-        if (! isset($input->confirmPassword)) {
+        if (! isset($input->confirmPassword) || strlen($input->confirmPassword) < 1) {
             return false;
         }
         if ($input->confirmPassword !== $input->inputPassword) {
@@ -80,6 +86,6 @@ class RegisterController {
                            $input->inputEmail,
                            $input->inputPassword);
         return UserDB::addUser($newUser);
-        // return $newUser->getUsername();
+        // return "Registration successful!";
     }   
 }

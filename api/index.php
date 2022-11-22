@@ -1,11 +1,22 @@
 <?php
+    $lifetime = 60 * 60 * 24 * 14;    // 2 weeks in seconds
+    session_set_cookie_params($lifetime, '/');
+    session_start();
+    if (empty($_SESSION['login'])) {
+        $_SESSION['login'] = false;
+    }
+    if (empty($_SESSION['curr_user'])) {
+        $_SESSION['curr_user'] = null;
+    }
+
     include('../src/controller/RegisterController.php');
-    // require_once('../src/controller/LoginController.php');
+    include('../src/controller/LoginController.php');
+    include('../src/controller/MenuController.php');
     include('../src/model/Database.php');
     include('../src/model/User.php');
     include('../src/model/UserDB.php');
     // include('../src/model/Product.php');
-    // include('../src/model/ProductDB.php');
+    include('../src/model/ProductDB.php');
     
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -17,15 +28,23 @@
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     $uri = explode('/', $uri);
     
-    if (!isset($uri[5])) {
+    if (!isset($uri[4])) {
         header("HTTP/1.1 404 Not Found");
         exit();
     } else {
-        $endpoint = $uri[5];
+        $endpoint = $uri[4];
     }
-    $method = $_SERVER['REQUEST_METHOD'];
 
-    echo $endpoint;
+    $productId = null;
+    $userId = null;
+    if ($uri[4] === "menu" && isset($uri[5])) {
+        $productId = $uri[5];
+    }
+    if ($uri[4] === "user" && isset($uri[5])) {
+        $userId = $uri[5];
+    }
+
+    $method = $_SERVER['REQUEST_METHOD'];
     
     switch($endpoint) {
         case "register":
@@ -33,8 +52,22 @@
             $controller->processRequest();
             break;
         case "login":
-            // $controller = new LoginController($method);
-            // $controller->processRequest();
+            $controller = new LoginController($method);
+            $controller->processRequest();
+            break;
+        case "session":
+            echo json_encode($_SESSION);
+            break;
+        case "logout":
+            unset($_SESSION['login']);
+            unset($_SESSION['user']);
+            session_unset();
+            session_destroy();
+
+            break;
+        case "menu":
+            $controller = new MenuController($method, $productId);
+            $controller->processRequest();
             break;
         default:
             echo "invalid endpoint";

@@ -14,21 +14,23 @@ class UserDB {
     
  public static function getUser($username) {
         $db = Database::getDB();
-        $query = 'SELECT username, password, firstName, lastName, 
+        $query = 'SELECT id, username, password, firstName, lastName, 
                      email, address 
                   FROM Users
                   WHERE username = :username';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue($username);
+            $statement->bindValue(':username', $username);
             $statement->execute();
             
             $row = $statement->fetch();
             $statement->closeCursor();
             
-            return self::loadUser($row);
+            // return self::loadUser($row);
+            return $row;
         } catch (PDOException $e) {
-            Database::displayError($e->getMessage());
+            // Database::displayError($e->getMessage());
+            return $e;
         }
     }
 
@@ -52,9 +54,11 @@ class UserDB {
            $statement->closeCursor();
 
            
-           return $user->getUserName();
+        //   return $user->getUserName();
+            return true;
        } catch (PDOException $e) {
-           Database::displayError($e->getMessage());
+        //   Database::displayError($e->getMessage());
+            return false;
        }
     }
     
@@ -64,9 +68,10 @@ class UserDB {
                   SET username = :username, firstName = :firstName,
                       lastName = :lastName, email = :email,
                       address = :address, password = :password
-                  WHERE username = :username';
+                  WHERE id = :id';
         try {
             $statement = $db->prepare($query);
+            $statement->bindValue(':username', $user->getID());
             $statement->bindValue(':username', $user->getUserName());
             $statement->bindValue(':password', $user->getPassword());
             $statement->bindValue(':firstName', $user->getFirstName());
@@ -83,4 +88,5 @@ class UserDB {
         }
     }
 }
+
 ?>
