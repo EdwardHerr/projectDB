@@ -14,7 +14,8 @@ class ProductDB {
             $statement->closeCursor();
             
             // return self::loadUser($row);
-            return $row;
+            $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'listPrice' => $row['listPrice']);
+            return $product;
         } catch (PDOException $e) {
             // Database::displayError($e->getMessage());
             return $e;

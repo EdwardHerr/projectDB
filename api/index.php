@@ -35,8 +35,8 @@
         $endpoint = $uri[4];
     }
 
-    productId = null;
-    userId = null;
+    $productId = null;
+    $userId = null;
     if ($uri[4] === "menu" && isset($uri[5])) {
         $productId = $uri[5];
     }
