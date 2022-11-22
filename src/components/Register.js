@@ -1,40 +1,46 @@
 import { React, useState, useEffect, useRef } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 
 export default function Register() {
-  const usernameRef = useRef(null)
-  const firstNameRef = useRef(null)
-  const lastNameRef = useRef(null)
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
-  const confirmPasswordRef = useRef(null)
-  const [registrationMessage, setRegistrationMessage] = useState("")
-  
-  let  message = null
-  
+  const usernameRef = useRef(null);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+  const [registrationMessage, setRegistrationMessage] = useState('');
+
   useEffect(() => {
-    console.log(registrationMessage)
-  }, [registrationMessage])
-  
+    console.log(registrationMessage);
+  }, [registrationMessage]);
+
+  const register = async (data) => {
+    axios
+      .post('register', data)
+      .then(function (res) {
+        setRegistrationMessage(res.data);
+      })
+      .then((window.location.href = '/login'))
+      .catch(function (err) {
+        if (err.response) {
+          setRegistrationMessage(err.response.data.error);
+        }
+      });
+  };
+
   const handleSubmit = (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const userData = {
       username: usernameRef.current.value,
       firstName: firstNameRef.current.value,
       lastName: lastNameRef.current.value,
       inputEmail: emailRef.current.value,
       inputPassword: passwordRef.current.value,
-      confirmPassword: passwordRef.current.value
-    }
-    axios.post('register', userData).then(function(res) {
-        setRegistrationMessage(res.data)
-    }).then(window.location.href = "/login").catch(function (err) {
-      if (err.response) {
-        setRegistrationMessage(err.response.data.error)
-      }
-    })
-  }
-  
+      confirmPassword: passwordRef.current.value,
+    };
+    register(userData);
+  };
+
   return (
     <div className='container register'>
       <h1>Register</h1>
@@ -45,7 +51,13 @@ export default function Register() {
             <label htmlFor='username' className='form-label'>
               Username
             </label>
-            <input type='text' className='form-control' id='username' aria-describedby='usernameHelp' ref={usernameRef} />
+            <input
+              type='text'
+              className='form-control'
+              id='username'
+              aria-describedby='usernameHelp'
+              ref={usernameRef}
+            />
           </div>
           <div className='name-forms col row'>
             <div className='mb-3 col-md'>
@@ -76,7 +88,13 @@ export default function Register() {
           <label htmlFor='inputEmail' className='form-label'>
             Email address
           </label>
-          <input type='email' className='form-control' id='inputEmail' aria-describedby='emailHelp' ref={emailRef}/>
+          <input
+            type='email'
+            className='form-control'
+            id='inputEmail'
+            aria-describedby='emailHelp'
+            ref={emailRef}
+          />
           <div id='emailHelp' className='form-text col-md'>
             We'll never share your email with anyone else.
           </div>
@@ -86,13 +104,18 @@ export default function Register() {
             <label htmlFor='inputPassword' className='form-label'>
               Password
             </label>
-            <input type='password' className='form-control' id='inputPassword' ref={passwordRef}/>
+            <input type='password' className='form-control' id='inputPassword' ref={passwordRef} />
           </div>
           <div className='mb-3 col-md'>
             <label htmlFor='confirmPassword' className='form-label'>
               Confirm Password
             </label>
-            <input type='password' className='form-control' id='confirmPassword' ref={confirmPasswordRef}/>
+            <input
+              type='password'
+              className='form-control'
+              id='confirmPassword'
+              ref={confirmPasswordRef}
+            />
           </div>
         </div>
         <div className='d-grid gap-2 d-sm-flex justify-content-sm-center'>

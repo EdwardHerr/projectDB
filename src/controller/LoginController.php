@@ -58,7 +58,8 @@ class LoginController {
     private function loginSuccess() {
         $_SESSION['login'] = true;
         $currUser = UserDB::getUser($input->username);
-        $_SESSION['user'] = new User($currUser['username'], $currUser['firstName'], $currUser['lastName'], $currUser['email'], $currUser['address']);
+        $new_user = array('username' => $currUser['username'], 'firstName' => $currUser['firstName'], 'lastName' => $currUser['lastName'], 'email' => $currUser['email'], 'address' => $currUser['address']);
+        $_SESSION['curr_user'] = json_encode($new_user);
         return "Login Successful!";
     }
     private function notFoundResponse() {

@@ -5,8 +5,8 @@
     if (empty($_SESSION['login'])) {
         $_SESSION['login'] = false;
     }
-    if (empty($_SESSION['user'])) {
-        $_SESSION['user'] = null;
+    if (empty($_SESSION['curr_user'])) {
+        $_SESSION['curr_user'] = null;
     }
 
     include('../src/controller/RegisterController.php');
@@ -49,7 +49,11 @@
             echo json_encode($_SESSION);
             break;
         case "logout":
-            $_SESSION = [];
+            unset($_SESSION['login']);
+            unset($_SESSION['user']);
+            session_unset();
+            session_destroy();
+
             break;
         case "products":
             $controller = new MenuController($method);

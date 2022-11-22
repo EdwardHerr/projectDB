@@ -2,11 +2,14 @@ import React from 'react';
 import axios from 'axios';
 
 export default function Navbar({ loggedIn }) {
-  
+  const logout = async () => {
+    axios.get('logout').then((window.location.href = '/'));
+  };
+
   const handleClick = () => {
-    axios.get("logout").then(window.location.href = "/")
-  }
-  
+    logout();
+  };
+
   return (
     <div className='mb-5'>
       <nav className='navbar navbar-expand-lg bg-light'>
