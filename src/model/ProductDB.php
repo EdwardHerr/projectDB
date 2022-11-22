@@ -16,7 +16,8 @@ class ProductDB {
             // return self::loadUser($row);
             return $row;
         } catch (PDOException $e) {
-            Database::displayError($e->getMessage());
+            // Database::displayError($e->getMessage());
+            return $e;
         }
     }
      public static function getAllProducts() {

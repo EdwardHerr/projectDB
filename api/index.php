@@ -34,6 +34,16 @@
     } else {
         $endpoint = $uri[4];
     }
+
+    productId = null;
+    userId = null;
+    if ($uri[4] === "menu" && isset($uri[5])) {
+        $productId = $uri[5];
+    }
+    if ($uri[4] === "user" && isset($uri[5])) {
+        $userId = $uri[5];
+    }
+
     $method = $_SERVER['REQUEST_METHOD'];
     
     switch($endpoint) {
@@ -56,7 +66,7 @@
 
             break;
         case "menu":
-            $controller = new MenuController($method);
+            $controller = new MenuController($method, $productId);
             $controller->processRequest();
             break;
         default:
