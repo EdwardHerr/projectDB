@@ -27,7 +27,7 @@ class LoginController {
         if (! $this->validateLogin($input)) {
             return $this->invalidLoginResponse();
         }
-        $body = $this->loginSuccess();
+        $body = $this->loginSuccess($input);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = $body;
         return $response;
@@ -55,17 +55,17 @@ class LoginController {
         return $response;
     }
 
-    private function loginSuccess() {
+    private function loginSuccess($input) {
         $_SESSION['login'] = true;
         $currUser = UserDB::getUser($input->username);
-        echo $currUser;
+        // return $currUser;
         $new_user = array('id' => $currUser['id'],
                           'username' => $currUser['username'],
                           'firstName' => $currUser['firstName'],
                           'lastName' => $currUser['lastName'],
                           'email' => $currUser['email'],
                           'address' => $currUser['address']);
-        $_SESSION['curr_user'] = json_encode($new_user);
+        $_SESSION['curr_user'] = $new_user;
         return "Login Successful!";
     }
     private function notFoundResponse() {
