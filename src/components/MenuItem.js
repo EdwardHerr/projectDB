@@ -5,14 +5,14 @@ export default function MenuItem({ id }) {
   const [menuItem, setMenuItem] = useState();
 
   const fetchData = async () => {
-    axios.get('products/' + id).then((res) => {
+    axios.get(window.location.pathname).then((res) => {
       setMenuItem(res.data);
     });
   };
 
   return (
     <div className='col-sm-4 mb-5'>
-      <h1>hello</h1>
+      <h1>hello {window.location.pathname}</h1>
     </div>
   );
 }

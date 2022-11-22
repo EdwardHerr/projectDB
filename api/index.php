@@ -55,7 +55,7 @@
             session_destroy();
 
             break;
-        case "products":
+        case "menu":
             $controller = new MenuController($method);
             $controller->processRequest();
             break;
