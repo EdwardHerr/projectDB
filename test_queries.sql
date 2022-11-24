@@ -2,14 +2,43 @@
 --
 USE e_commerce;
 
-SELECT u.firstName as 'First Name',
-uo.id as 'UserOrder ID',
-uo.orderDate as 'Order Date',
-p.name as 'Product name',
-p.description as 'Description',
-o.quantity as 'Quantity'
+SELECT u.firstName AS 'First Name',
+uo.id AS 'UserOrder ID',
+uo.orderDate AS 'Order Date',
+p.name AS 'Product name',
+p.description AS 'Description',
+o.quantity AS 'Quantity'
 FROM Users u
 INNER JOIN UserOrders uo ON u.id = uo.userID
 INNER JOIN Orders o ON uo.id = o.userOrderID
 INNER JOIN Products p ON p.id = o.productID
 WHERE uo.id = '1';
+
+
+-- get single order --
+SELECT uo.id AS 'orderId',
+uo.orderDate AS 'orderDate',
+p.id AS 'productId',
+p.name AS 'Product name',
+o.quantity AS 'quantity'
+FROM Users u
+INNER JOIN UserOrders uo ON u.id = uo.userID
+INNER JOIN Orders o ON uo.id = o.userOrderID
+INNER JOIN Products p ON p.id = o.productID
+WHERE uo.id = 1;
+
+-- get all orders --
+SELECT
+uo.id AS orderId,
+uo.orderDate AS orderDate,
+u.address AS address,
+p.id AS productId,
+ROUND(SUM(p.listPrice * o.quantity), 2) AS total
+FROM Users u
+INNER JOIN UserOrders uo ON u.id = uo.userID
+INNER JOIN Orders o ON uo.id = o.userOrderID
+INNER JOIN Products p ON p.id = o.productID
+WHERE u.id = 1
+GROUP BY orderId
+ORDER BY orderDate DESC;
+

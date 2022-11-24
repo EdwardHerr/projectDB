@@ -1,30 +1,66 @@
 <?php
 class OrderDB {   
-    
-    private static function loadOrder($row) {
-    $order = new Order($row['orderID'],
-                   $row['username'],
-                   $row['orderDate'],
-                   $row['cartID']);
-    return $order;
-    }
-    
-    public static function getOrder($order) {
+    public static function getAllOrders($userId) {
         $db = Database::getDB();
-        $query = 'SELECT orderID, username, orderDate, cartID 
-                  FROM Orders
-                  WHERE orderID = :orderID';
+        $query = 'SELECT
+                    uo.id AS orderId,
+                    uo.orderDate AS orderDate,
+                    u.address AS address,
+                    ROUND(SUM(p.listPrice * o.quantity), 2) AS total
+                    FROM Users u
+                    INNER JOIN UserOrders uo ON u.id = uo.userID
+                    INNER JOIN Orders o ON uo.id = o.userOrderID
+                    INNER JOIN Products p ON p.id = o.productID
+                    WHERE u.id = :userId
+                    GROUP BY orderId
+                    ORDER BY orderDate DESC';
+                    
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue($orderID);
+            $statement->bindValue(':userId', $userId);
             $statement->execute();
             
-            $row = $statement->fetch();
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
             $statement->closeCursor();
-       
-            return self::loadOrder($row);
+            $orders = [];
+            foreach ($rows as $row) {
+                $order = array('orderId' => $row['orderId'], 'orderDate' => $row['orderDate'], 'productId' => $row['productId'], 'quantity' => $row['quantity']);
+                $orderss[] = $order;
+            }
+            return $orders;
         } catch (PDOException $e) {
-            Database::displayError($e->getMessage());
+            return $e;
+        }
+    }
+    
+    public static function getOrderById($orderId) {
+        $db = Database::getDB();
+        $query = 'SELECT uo.id AS orderId,
+                    uo.orderDate AS orderDate,
+                    p.id AS productId,
+                    p.name AS Product name,
+                    o.quantity AS quantity
+                    FROM Users u
+                    INNER JOIN UserOrders uo ON u.id = uo.userID
+                    INNER JOIN Orders o ON uo.id = o.userOrderID
+                    INNER JOIN Products p ON p.id = o.productID
+                    WHERE uo.id = :orderId';
+                    
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue('orderId', $orderId);
+            $statement->execute();
+            
+            $rows = $statement->fetchAll(\PDO::FETCH_ASSOC);
+            $statement->closeCursor();
+            $orders = [];
+            foreach ($rows as $row) {
+                $order = array('orderId' => $row['orderId'], 'orderDate' => $row['orderDate'], 'productId' => $row['productId'], 'quantity' => $row['quantity']);
+                $orderss[] = $order;
+            }
+            return $orders;
+        } catch (PDOException $e) {
+            return $e;
         }
     }
     

@@ -18,7 +18,7 @@ CREATE TABLE Products(
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(100) NOT NULL,
   description VARCHAR(255) NOT NULL,
-  listPrice FLOAT(2),
+  listPrice DECIMAL(5,2),
   PRIMARY KEY (id)
 );
 CREATE TABLE UserOrders(
@@ -149,27 +149,20 @@ VALUES(
 -- Create shopping carts--
 INSERT INTO UserOrders (userID, orderDate)
 VALUES (1, '2022-11-19'),
-  (2, '2022-11-18');
+  (2, '2022-11-18'),
+  (1, '2022-11-20'),
+  (1, '2022-11-21'),
+  (1, '2022-11-22');
 
 INSERT INTO Orders (productID, userOrderID, quantity)
-VALUES (
-    1,
-    1,
-    2
-),
-(
-    2,
-    2,
-    10
-),
-(
-    4,
-    1,
-    3
-),
-(
-    3,
-    1,
-    1
-);
+VALUES (1, 1, 2),
+(2, 2, 10),
+(4, 1, 3),
+(3, 1, 1),
+(7, 3, 3),
+(5, 3, 3),
+(1, 3, 5),
+(2, 3, 5),
+(3, 4, 5),
+(4, 4, 5);
 
