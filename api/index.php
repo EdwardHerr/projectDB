@@ -14,6 +14,7 @@
 
     include('../src/model/Database.php');
     include('../src/model/UserDB.php');
+    include('../src/controller/SessionController.php');
     include('../src/controller/RegisterController.php');
     include('../src/controller/LoginController.php');
     include('../src/controller/UserController.php');
@@ -45,15 +46,16 @@
     $productId = null;
     $userId = null;
     $orderId = null;
+    $update = null;
     if ($uri[4] === "user" && isset($uri[5])) {
         $userId = $uri[5];
     }
     if ($uri[4] === "menu" && isset($uri[5])) {
         $productId = $uri[5];
     }
-    // if ($uri[4] === "orders" && isset($uri[5])) {
-    //     $orderId = $uri[5];
-    // }
+     if ($uri[4] === "session" && isset($uri[5]) && $uri[5] === "update") {
+        $update = $uri[5];
+    }
 
     $method = $_SERVER['REQUEST_METHOD'];
     
@@ -80,7 +82,8 @@
             $controller->processRequest();
             break;
         case "session":
-            echo json_encode($_SESSION);
+            $controller = new SessionController($method, $update);
+            $controller->processRequest();
             break;
         case "logout":
             unset($_SESSION['login']);

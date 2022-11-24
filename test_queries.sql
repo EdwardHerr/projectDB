@@ -30,7 +30,7 @@ WHERE uo.id = 1;
 -- get all orders --
 SELECT
 uo.id AS orderId,
-uo.orderDate AS orderDate,
+DATE(uo.orderDate) AS orderDate,
 u.address AS address,
 p.id AS productId,
 ROUND(SUM(p.listPrice * o.quantity), 2) AS total

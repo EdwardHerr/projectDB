@@ -4,7 +4,7 @@ class OrderDB {
         $db = Database::getDB();
         $query = 'SELECT
                     uo.id AS orderId,
-                    uo.orderDate AS orderDate,
+                    DATE(uo.orderDate) AS orderDate,
                     u.address AS address,
                     ROUND(SUM(p.listPrice * o.quantity), 2) AS total
                     FROM Users u
