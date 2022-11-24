@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Link, useParams } from 'react-router-dom';
 
 import { useUserContext } from '../context/UserContext';
 
-export default function Orders() {
+export default function OrdersDetails() {
   const { user } = useUserContext();
-  const [orders, setOrders] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
   const [loading, setLoading] = useState(false);
+  const orderId = useParams();
 
   useEffect(() => {
     const fetchOrders = async () => {
       axios
-        .get('orders/', { params: { userId: user.id } })
+        .get('orders/', { params: { userId: user.id, orderId: orderId.id } })
         .then((res) => {
-          setOrders(res.data);
+          setOrderItems(res.data);
         })
         .catch((err) => console.log(err));
     };
@@ -23,7 +24,7 @@ export default function Orders() {
       fetchOrders();
     }
     setLoading(false);
-  }, [user]);
+  }, [orderId.id, user]);
 
   return (
     <div className='container'>
@@ -36,35 +37,28 @@ export default function Orders() {
             <table className='table text-start'>
               <thead>
                 <tr>
-                  <th scope='col'>Order #</th>
-                  <th scope='col'>Order Date</th>
-                  <th scope='col'>Total</th>
-                  <th scope='col'>Address</th>
-                  <th scope='col'></th>
+                  <th scope='col'>Item ID</th>
+                  <th scope='col'>Item Name</th>
+                  <th scope='col'>Description</th>
+                  <th scope='col'>Price</th>
+                  <th scope='col'>Quantity</th>
                 </tr>
               </thead>
-              {orders.map((item, key) => (
+              {orderItems.map((item, key) => (
                 <tbody key={key}>
                   <tr>
-                    <td>{item.orderId}</td>
-                    <td>{item.orderDate}</td>
-                    <td>{item.total}</td>
-                    <td>{item.address}</td>
-                    <td>
-                      <Link
-                        to={'/orders/' + item.orderId}
-                        className='btn btn-primary'
-                        params={{ orderId: item.orderId }}
-                      >
-                        See order
-                      </Link>
-                    </td>
+                    <td>{item.productId}</td>
+                    <td>{item.productName}</td>
+                    <td>{item.description}</td>
+                    <td>{item.listPrice}</td>
+                    <td>{item.quantity}</td>
                   </tr>
                 </tbody>
               ))}
             </table>
           )}
         </div>
+        <Link to='/orders'>Back to orders</Link>
       </div>
     </div>
   );

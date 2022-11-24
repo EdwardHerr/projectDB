@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import { useUserContext } from '../context/UserContext';
 
@@ -20,11 +21,19 @@ export default function Menu() {
     setLoading(false);
   }, []);
 
-  const handleDetailsClick = (event) => {
-    console.log('Details: ' + event.target.id);
+  const addToCart = (data) => {
+    axios.post('session', data).then((res) => {
+      console.log(res);
+    });
   };
-  const handleAddToCartClick = (event) => {
-    console.log('Add to cart: ' + event.target.id);
+
+  const handleAddToCartClick = async (event) => {
+    const item = {
+      productId: event.target.id,
+      quantity: 1,
+    };
+
+    addToCart(item);
   };
 
   const isLoggedIn = (user) => {
@@ -42,22 +51,21 @@ export default function Menu() {
                   <p className='card-text text-end me-5'>{item.listPrice}</p>
                 </div>
                 <div className='card-footer bg-transparent'>
-                  <a
+                  <Link
                     className='mx-3'
-                    href={'/menu/' + item.id}
+                    to={'/menu/' + item.id}
                     id={item.id}
-                    onClick={handleDetailsClick}
+                    params={{ id: item.id }}
                   >
                     Details
-                  </a>
-                  <a
+                  </Link>
+                  <button
                     className='btn btn-primary mx-3'
                     id={item.id}
-                    href='#'
                     onClick={handleAddToCartClick}
                   >
                     Add to Cart
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

@@ -14,12 +14,12 @@ export default function Login() {
     axios
       .post('login', data)
       .then(function (res) {
-        setLoginMessage((curr) => res.data);
+        setLoginMessage(res.data);
       })
       .then((window.location.href = '/'))
       .catch(function (err) {
         console.log(err.response.data.error);
-        setLoginMessage((curr) => err.response.data.error);
+        setLoginMessage(err.response.data.error);
       });
   };
 
@@ -29,7 +29,6 @@ export default function Login() {
       username: usernameRef.current.value,
       inputPassword: passwordRef.current.value,
     };
-    console.log(loginInfo);
     login(loginInfo);
   };
 

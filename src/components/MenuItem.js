@@ -1,17 +1,16 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 
-import { useUserContext } from '../context/UserContext';
+import { useParams } from 'react-router-dom';
 
 export default function MenuItem() {
-  const { user } = useUserContext();
-
   const [menuItem, setMenuItem] = useState({});
   const [qty, setQty] = useState(1);
+  const itemId = useParams();
 
   const fetchData = async () => {
     axios
-      .get(window.location.pathname)
+      .get('/menu/' + itemId.id)
       .then((res) => {
         setMenuItem(res.data);
       })
