@@ -34,6 +34,26 @@ class UserDB {
         }
     }
 
+public static function getUserById($userId) {
+        $db = Database::getDB();
+        $query = 'SELECT id, username, password, firstName, lastName, 
+                     email, address 
+                  FROM Users
+                  WHERE id = :id';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $userId);
+            $statement->execute();
+            
+            $row = $statement->fetch();
+            $statement->closeCursor();
+            
+            return $row;
+        } catch (PDOException $e) {
+            return $e;
+        }
+    }    
+
     public static function addUser($user) {
         $db = Database::getDB();
         $query = 'INSERT INTO Users
