@@ -26,7 +26,7 @@ class UserController {
     }
 
     private function getUserInfo($userId) {
-        $result = UserDB::getUser($userID);
+        $result = UserDB::getUserById($userID);
         if (! $result) {
             return $this->notFoundResponse();
         }
