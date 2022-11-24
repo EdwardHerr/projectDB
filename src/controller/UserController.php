@@ -12,7 +12,7 @@ class UserController {
         switch ($this->requestMethod) {
             case 'POST':
                 if ($this->userId) {
-                    $response = $this->updateUserInfo($this->userId);
+                    $response = $this->updateUserInfo();
                 } else {
                     $response['status_code_header'] = "HTTP/1.1 400 Bad Request";
                     $response['body'] = json_encode([
@@ -38,29 +38,23 @@ class UserController {
         }
     }
     
-    private function updateUserInfo($userId) {
+    private function updateUserInfo() {
         $input = json_decode(file_get_contents('php://input'));
         if (! $this->validateUser($input)) {
             return $this->invalidUserResponse();
         }
-        $res = $this->updateUser($userId,
-                                 $input->username,
-                                 $input->firstName,
-                                 $input->lastName,
-                                 $input->inputEmail,
-                                 $input->inputPassword,
-                                 $input->address);
-            if ($res) {
-                $response['status_code_header'] = 'HTTP/1.1 200 OK';
-                $body = "Update successful!";
-            } else {
-                $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
-                $body = json_encode([
-                    'error' => 'Unable to update account'
-                ]);
-            }
-            $response['body'] = $body;
-            return $response;
+        $res = UserDB::updateUser($this->userId, $input->username, $input->firstName, $input->lastName, $input->inputEmail, $input->inputPassword, $input->address);
+        if ($res) {
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            $body = "Update successful!";
+        } else {
+            $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
+            $body = json_encode([
+                'error' => 'Unable to update account'
+            ]);
+        }
+        $response['body'] = $body;
+        return $response;
     }
     
     private function getUserInfo($userId) {
@@ -71,10 +65,6 @@ class UserController {
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
-    }
-    
-    private function updateUser($input) {
-        return UserDB::updateUser($this->id, $this->username. $this->firstName, $this->lastName, $this->inputEmail, $this->inputPassword, $this->address);
     }
     
     private function validateUser($input) {

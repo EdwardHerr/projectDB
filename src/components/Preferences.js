@@ -20,9 +20,13 @@ export default function Preferences() {
     return axios
       .post('/user/' + user.id, userData)
       .then((res) => {
-        setMessage(res);
+        setMessage(res.data)
       })
-      .catch((err) => setMessage(err.data));
+      .catch((err) => {
+        console.log(err)
+        setMessage(err.response.data.error)
+        
+      });
   };
 
   const handleSubmit = (e) => {
@@ -36,7 +40,7 @@ export default function Preferences() {
       inputEmail: emailRef.current.value,
       address: addressRef.current.value,
     };
-
+    console.log(userData)
     updateUser(userData);
   };
 

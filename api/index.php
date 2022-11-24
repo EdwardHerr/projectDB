@@ -71,7 +71,7 @@
             break;
         case "logout":
             unset($_SESSION['login']);
-            unset($_SESSION['user']);
+            unset($_SESSION['curr_user']);
             unset($_SESSION['cart']);
             session_unset();
             session_destroy();

@@ -21,22 +21,21 @@ CREATE TABLE Products(
   listPrice FLOAT(2),
   PRIMARY KEY (id)
 );
-CREATE TABLE Carts(
+CREATE TABLE UserOrders(
   id INT NOT NULL AUTO_INCREMENT,
   userID INT NOT NULL,
   orderDate DATETIME NOT NULL,
-  paid BOOLEAN NOT NULL DEFAULT FALSE,
   FOREIGN KEY (userID) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE Orders(
   productID INT NOT NULL,
-  cartID INT NOT NULL,
+  userOrderID INT NOT NULL,
   quantity INT NOT NULL,
-  PRIMARY KEY(productID, cartID),
+  PRIMARY KEY(productID, userOrderID),
   FOREIGN KEY (productID) REFERENCES Products(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-  FOREIGN KEY (cartID) REFERENCES Carts(id) ON UPDATE CASCADE ON DELETE RESTRICT
+  FOREIGN KEY (userOrderID) REFERENCES UserOrders(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
 CREATE TABLE CreditCards (
@@ -148,11 +147,11 @@ VALUES(
   );
 
 -- Create shopping carts--
-INSERT INTO Carts (userID, orderDate, paid)
-VALUES (1, '2022-11-19', 0),
-  (2, '2022-11-18', 1);
+INSERT INTO UserOrders (userID, orderDate)
+VALUES (1, '2022-11-19'),
+  (2, '2022-11-18');
 
-INSERT INTO Orders (productID, cartID, quantity)
+INSERT INTO Orders (productID, userOrderID, quantity)
 VALUES (
     1,
     1,

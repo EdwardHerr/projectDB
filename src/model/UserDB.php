@@ -69,9 +69,7 @@ public static function getUserById($userId) {
        }
     }
     
-    
-    // Not working
-    public static function updateUser($id, $username, $firstName, $lastName, $email, $password, $address = "") {
+    public static function updateUser($id, $username, $firstName, $lastName, $email, $password, $address) {
         $db = Database::getDB();
         $query = 'UPDATE Users
                   SET username=:username, firstName=:firstName,

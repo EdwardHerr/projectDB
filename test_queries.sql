@@ -3,12 +3,13 @@
 USE e_commerce;
 
 SELECT u.firstName as 'First Name',
-c.id as 'Cart ID',
-c.orderDate as 'Order Date',
+uo.id as 'UserOrder ID',
+uo.orderDate as 'Order Date',
 p.name as 'Product name',
-p.description as 'Description'
+p.description as 'Description',
+o.quantity as 'Quantity'
 FROM Users u
-INNER JOIN Carts c ON u.id = c.userID
-INNER JOIN Orders o ON c.id = o.cartID
+INNER JOIN UserOrders uo ON u.id = uo.userID
+INNER JOIN Orders o ON uo.id = o.userOrderID
 INNER JOIN Products p ON p.id = o.productID
-WHERE c.id = '1' AND c.paid;
+WHERE uo.id = '1';
