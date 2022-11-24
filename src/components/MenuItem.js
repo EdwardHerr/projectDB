@@ -1,15 +1,21 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 
+import { useUserContext } from '../context/UserContext';
+
 export default function MenuItem() {
+  const { user } = useUserContext();
+
   const [menuItem, setMenuItem] = useState({});
   const [qty, setQty] = useState(1);
 
   const fetchData = async () => {
-    axios.get(window.location.pathname).then((res) => {
-      console.log(res.data);
-      setMenuItem(res.data);
-    });
+    axios
+      .get(window.location.pathname)
+      .then((res) => {
+        setMenuItem(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -36,7 +42,7 @@ export default function MenuItem() {
           >
             -
           </button>
-          <input type='text' className='form-control' value={qty} disabled readonly />
+          <input type='text' className='form-control' value={qty} disabled readOnly />
           <button className='btn btn-outline-secondary' onClick={() => setQty(qty + 1)}>
             +
           </button>
