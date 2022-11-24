@@ -21,6 +21,10 @@
     include('../src/model/ProductDB.php');
     include('../src/controller/MenuController.php');
     
+    include('../src/model/OrderDB.php');
+    include('../src/controller/OrderController.php');
+    
+    
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
     header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE");
@@ -40,12 +44,16 @@
 
     $productId = null;
     $userId = null;
-    if ($uri[4] === "menu" && isset($uri[5])) {
-        $productId = $uri[5];
-    }
+    $orderId = null;
     if ($uri[4] === "user" && isset($uri[5])) {
         $userId = $uri[5];
     }
+    if ($uri[4] === "menu" && isset($uri[5])) {
+        $productId = $uri[5];
+    }
+    // if ($uri[4] === "orders" && isset($uri[5])) {
+    //     $orderId = $uri[5];
+    // }
 
     $method = $_SERVER['REQUEST_METHOD'];
     
@@ -64,6 +72,11 @@
             break;
         case "menu":
             $controller = new MenuController($method, $productId);
+            $controller->processRequest();
+            break;
+        case "orders":
+            $params = $_GET;
+            $controller = new OrderController($method, $params);
             $controller->processRequest();
             break;
         case "session":

@@ -42,3 +42,14 @@ WHERE u.id = 1
 GROUP BY orderId
 ORDER BY orderDate DESC;
 
+SELECT 
+p.id AS productId,
+p.name AS productName,
+p.description as description,
+o.quantity AS quantity,
+p.listPrice as listPrice
+FROM Users u
+INNER JOIN UserOrders uo ON u.id = uo.userID
+INNER JOIN Orders o ON uo.id = o.userOrderID
+INNER JOIN Products p ON p.id = o.productID
+WHERE uo.id = 1 AND u.id = 1
