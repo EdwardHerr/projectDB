@@ -21,11 +21,5 @@ class Database {
         }
         return self::$db;
     }
-    
-    public static function displayError($error_message) {
-        global $app_path;
-        include 'errors/db_error.php';
-        exit();
-    }
 }
 ?>

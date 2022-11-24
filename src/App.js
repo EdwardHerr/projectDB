@@ -20,7 +20,7 @@ function App() {
     return axios.get('session').then((res) => {
       setLoggedIn(res.data.login);
       setUser(res.data.curr_user);
-    });
+    }).catch(err => console.log(err));
   };
 
   useEffect(() => {

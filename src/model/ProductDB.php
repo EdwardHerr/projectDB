@@ -13,11 +13,9 @@ class ProductDB {
             $row = $statement->fetch();
             $statement->closeCursor();
             
-            // return self::loadUser($row);
             $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'listPrice' => $row['listPrice']);
             return $product;
         } catch (PDOException $e) {
-            // Database::displayError($e->getMessage());
             return $e;
         }
     }
@@ -35,11 +33,8 @@ class ProductDB {
             foreach ($rows as $row) {
                 $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'listPrice' => $row['listPrice']);
                 $products[] = $product;
-                // $products[] = $product;
             }
-            // return self::loadUser($row);
             return $products;
-            // return $rows;
         } catch (PDOException $e) {
             return "Unable to get products";
         }

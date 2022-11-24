@@ -8,15 +8,18 @@
     if (empty($_SESSION['curr_user'])) {
         $_SESSION['curr_user'] = null;
     }
+    if (empty($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
 
+    include('../src/model/Database.php');
+    include('../src/model/UserDB.php');
     include('../src/controller/RegisterController.php');
     include('../src/controller/LoginController.php');
-    include('../src/controller/MenuController.php');
-    include('../src/model/Database.php');
-    include('../src/model/User.php');
-    include('../src/model/UserDB.php');
-    // include('../src/model/Product.php');
+    include('../src/controller/UserController.php');
+    
     include('../src/model/ProductDB.php');
+    include('../src/controller/MenuController.php');
     
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
@@ -55,19 +58,23 @@
             $controller = new LoginController($method);
             $controller->processRequest();
             break;
+        case "user":
+            $controller = new UserController($method, $userId);
+            $controller->processRequest();
+            break;
+        case "menu":
+            $controller = new MenuController($method, $productId);
+            $controller->processRequest();
+            break;
         case "session":
             echo json_encode($_SESSION);
             break;
         case "logout":
             unset($_SESSION['login']);
             unset($_SESSION['user']);
+            unset($_SESSION['cart']);
             session_unset();
             session_destroy();
-
-            break;
-        case "menu":
-            $controller = new MenuController($method, $productId);
-            $controller->processRequest();
             break;
         default:
             echo "invalid endpoint";
