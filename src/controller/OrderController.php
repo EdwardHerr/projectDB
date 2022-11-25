@@ -17,7 +17,10 @@ class OrderController {
                     $response = $this->getOrderData($this->userId, $this->orderId);
                 } else if ($this->userId) {
                     $response = $this->getAllOrderData($this->userId);
-                };
+                }
+                break;
+            case 'POST':
+                $response = $this->addOrder($this->userId);
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -43,6 +46,21 @@ class OrderController {
         }
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
+        return $response;
+    }
+    
+    private function addOrder($userId) {
+        $input = json_decode(file_get_contents('php://input'));
+        $orderDate = $input->orderDate;
+        $products = $input->products;
+        $result = OrderDB::addOrder($userId, $orderDate, $products);
+        if ($result) {
+            $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        } else {
+            $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
+        }
+        
+        $response['body'] = $result;
         return $response;
     }
     

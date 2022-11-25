@@ -66,26 +66,35 @@ class OrderDB {
         }
     }
     
-    // public static function addOrder($order) {
-    //     $db = Database::getDB();
-    //     $query = 'INSERT INTO Orders
-    //                 (orderID, username, orderDate, cartID)
-    //              VALUES
-    //                 (:orderID, :username, :orderDate, cartID, NOW())';
-    //   try {
-    //       $statement = $db->prepare($query);
-    //       $statement->bindValue(':orderID', $order->getorderID());
-    //       $statement->bindValue(':username', $order->getUserName());
-    //       $statement->bindValue(':orderDate', $order->getorderDate());
-    //       $statement->bindValue(':cartID', $order->getcartID());
-    //       $statement->execute();
-    //       $statement->closeCursor();
-
-    //       // Get the last product ID that was automatically generated
-    //       return $order->getorderID;
-    //   } catch (PDOException $e) {
-    //       Database::displayError($e->getMessage());
-    //   }
-    // }
+    public static function addOrder($userId, $orderDate, $products) {
+        $db = Database::getDB();
+        $db->beginTransaction();
+        $query1 = 'INSERT INTO UserOrders (userID, orderDate) VALUES (:userId, :orderDate)';
+        $query2 = 'INSERT INTO Orders(productID, userOrderID, quantity) VALUES (:productId, :userOrderId, :quantity)';
+        try {
+            $statement = $db->prepare($query1);
+            $statement->bindValue(':userId', $userId, PDO::PARAM_INT);
+            $statement->bindValue(':orderDate', $orderDate);
+            $statement->execute();
+            $userOrderId = $db->lastInsertId();
+            echo json_encode($userOrderId);
+            foreach($products as $item) {
+                // print_r($item);
+                // echo $item->productId;
+                $statement = $db->prepare($query2);
+                $statement->bindValue(':productId', $item->productId);
+                $statement->bindValue(':userOrderId', $userOrderId);
+                $statement->bindValue(':quantity', $item->quantity);
+                $statement->execute();
+            }
+          
+            $db->commit();
+            $statement->closeCursor();
+            return true;
+        } catch (PDOException $e) {
+            $db->rollBack();
+            return $e;
+        }
+    }
 }
 ?>

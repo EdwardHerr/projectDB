@@ -53,3 +53,25 @@ INNER JOIN UserOrders uo ON u.id = uo.userID
 INNER JOIN Orders o ON uo.id = o.userOrderID
 INNER JOIN Products p ON p.id = o.productID
 WHERE uo.id = 1 AND u.id = 1
+
+SELECT *
+FROM
+UserOrders
+INNER JOIN
+Orders
+INNER JOIN Users
+WHERE UserOrders.id = Orders.userOrderID AND UserOrders.userID = Users.id
+ORDER BY UserOrders.id;
+
+BEGIN:
+INSERT INTO UserOrders (userID, orderDate)
+VALUES (1, '2022-11-25');
+INSERT INTO Orders(productID, userOrderID, quantity)
+VALUES (6, LAST_INSERT_ID(), 2);
+COMMIT;
+
+
+BEGIN;
+INSERT INTO UserOrders (userID, orderDate) VALUES (2, '2022-11-25');
+INSERT INTO Orders(productID, userOrderID, quantity) VALUES (8, LAST_INSERT_ID(), 2);
+COMMIT;
