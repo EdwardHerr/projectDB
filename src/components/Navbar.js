@@ -25,37 +25,44 @@ export default function Navbar() {
       );
     } else {
       return (
-        <li className='nav-item dropdown'>
-          <a
-            className='nav-link dropdown-toggle'
-            href='#'
-            role='button'
-            data-bs-toggle='dropdown'
-            aria-expanded='false'
-          >
-            My Account
-          </a>
-          <ul className='dropdown-menu'>
-            <li>
-              <a className='dropdown-item' href='/orders'>
-                Past Orders
-              </a>
-            </li>
-            <li>
-              <a className='dropdown-item' href='/preferences'>
-                Preferences
-              </a>
-            </li>
-            <li>
-              <hr className='dropdown-divider' />
-            </li>
-            <li>
-              <button className='dropdown-item' onClick={handleClick}>
-                Log Out
-              </button>
-            </li>
-          </ul>
-        </li>
+        <>
+          <li className='nav-item'>
+            <a className='nav-link' href='/cart'>
+              My Cart
+            </a>
+          </li>
+          <li className='nav-item dropdown'>
+            <a
+              className='nav-link dropdown-toggle'
+              href='#'
+              role='button'
+              data-bs-toggle='dropdown'
+              aria-expanded='false'
+            >
+              My Account
+            </a>
+            <ul className='dropdown-menu'>
+              <li>
+                <a className='dropdown-item' href='/orders'>
+                  Past Orders
+                </a>
+              </li>
+              <li>
+                <a className='dropdown-item' href='/preferences'>
+                  Preferences
+                </a>
+              </li>
+              <li>
+                <hr className='dropdown-divider' />
+              </li>
+              <li>
+                <button className='dropdown-item' onClick={handleClick}>
+                  Log Out
+                </button>
+              </li>
+            </ul>
+          </li>
+        </>
       );
     }
   };
