@@ -20,7 +20,7 @@ class OrderController {
                 }
                 break;
             case 'POST':
-                $response = $this->addOrder($this->userId);
+                $response = $this->addOrder();
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -49,18 +49,21 @@ class OrderController {
         return $response;
     }
     
-    private function addOrder($userId) {
+    private function addOrder() {
         $input = json_decode(file_get_contents('php://input'));
+        $userId = $input->userId;
         $orderDate = $input->orderDate;
         $products = $input->products;
         $result = OrderDB::addOrder($userId, $orderDate, $products);
         if ($result) {
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
+            $response['body'] = 'Order placed!.';
         } else {
             $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
+            $response['body'] = json_encode([
+            'error' => 'Unable to place order.'
+        ]);
         }
-        
-        $response['body'] = $result;
         return $response;
     }
     
