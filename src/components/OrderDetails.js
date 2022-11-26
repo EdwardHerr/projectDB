@@ -40,8 +40,8 @@ export default function OrdersDetails() {
                   <th scope='col'>Item ID</th>
                   <th scope='col'>Item Name</th>
                   <th scope='col'>Description</th>
-                  <th scope='col'>Price</th>
                   <th scope='col'>Quantity</th>
+                  <th scope='col'>Price</th>
                 </tr>
               </thead>
               {orderItems.map((item, key) => (
@@ -50,8 +50,8 @@ export default function OrdersDetails() {
                     <td>{item.productId}</td>
                     <td>{item.productName}</td>
                     <td>{item.description}</td>
-                    <td>{item.listPrice}</td>
                     <td>{item.quantity}</td>
+                    <td>${item.listPrice}</td>
                   </tr>
                 </tbody>
               ))}

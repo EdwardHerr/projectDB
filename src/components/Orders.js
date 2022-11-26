@@ -38,8 +38,8 @@ export default function Orders() {
                 <tr>
                   <th scope='col'>Order #</th>
                   <th scope='col'>Order Date</th>
-                  <th scope='col'>Total</th>
                   <th scope='col'>Address</th>
+                  <th scope='col'>Total</th>
                   <th scope='col'></th>
                 </tr>
               </thead>
@@ -47,9 +47,9 @@ export default function Orders() {
                 <tbody key={key}>
                   <tr>
                     <td>{item.orderId}</td>
-                    <td>{item.orderDate}</td>
-                    <td>{item.total}</td>
+                    <td>{new Date(item.orderDate).toDateString()}</td>
                     <td>{item.address}</td>
+                    <td>${item.total}</td>
                     <td>
                       <Link
                         to={'/orders/' + item.orderId}

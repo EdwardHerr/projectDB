@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function Menu() {
-  const { user } = useUserContext();
+  const { user, addToCart } = useUserContext();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
-    axios.get('menu').then((res) => {
+    axios.get('/menu').then((res) => {
       setItems([...res.data]);
     });
   };
@@ -20,12 +20,6 @@ export default function Menu() {
     fetchData();
     setLoading(false);
   }, []);
-
-  const addToCart = (data) => {
-    axios.post('session', data).then((res) => {
-      console.log(res);
-    });
-  };
 
   const handleAddToCartClick = async (event) => {
     const item = {
@@ -51,6 +45,7 @@ export default function Menu() {
                   <p className='card-text text-end me-5'>{item.listPrice}</p>
                 </div>
                 <div className='card-footer bg-transparent'>
+                  <div className='row'></div>
                   <Link
                     className='mx-3'
                     to={'/menu/' + item.id}

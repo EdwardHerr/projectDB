@@ -10,6 +10,7 @@ export function useUserContext() {
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchUser = async () => {
     return axios({
@@ -23,9 +24,37 @@ export function UserContextProvider({ children }) {
       .catch((err) => console.log(err));
   };
 
+  const fetchCart = async () => {
+    axios({
+      method: 'get',
+      url: '/session',
+      baseURL: '/',
+    })
+      .then((res) => {
+        setCart(res.data.cart);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const addToCart = (data) => {
+    axios.post('/session', data).then((res) => {
+      console.log(res.data);
+    });
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    fetchCart();
+    setLoading(false);
+  }, []);
+
   useEffect(() => {
     fetchUser();
   }, []);
 
-  return <UserContext.Provider value={{ user, cart }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, cart, setCart, loading, setLoading, addToCart }}>
+      {children}
+    </UserContext.Provider>
+  );
 }
