@@ -77,10 +77,7 @@ class OrderDB {
             $statement->bindValue(':orderDate', $orderDate);
             $statement->execute();
             $userOrderId = $db->lastInsertId();
-            echo json_encode($userOrderId);
             foreach($products as $item) {
-                // print_r($item);
-                // echo $item->productId;
                 $statement = $db->prepare($query2);
                 $statement->bindValue(':productId', $item->productId);
                 $statement->bindValue(':userOrderId', $userOrderId);
