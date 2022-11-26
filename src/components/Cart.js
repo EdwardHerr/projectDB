@@ -132,7 +132,8 @@ export default function Cart() {
                     return (
                       <tbody key={key}>
                         <tr>
-                          <td>{cart[key].productId}</td>
+                          {/* <td>{cart[key].productId}</td> */}
+                          <td>{item.id}</td>
                           <td>{item.name}</td>
                           <td>{item.description}</td>
                           <td>{item.listPrice}</td>
@@ -150,7 +151,7 @@ export default function Cart() {
                                 type='text'
                                 className='form-control'
                                 id={key}
-                                value={cart[key].quantity}
+                                value={(cart && cart[key] && cart[key].quantity) || 0}
                                 disabled
                                 readOnly
                               />

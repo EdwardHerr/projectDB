@@ -1,5 +1,9 @@
-import { React, useState, useEffect, useRef } from 'react';
+import { React, useRef } from 'react';
 import axios from 'axios';
+
+import ToastMessage from './ToastMessage';
+
+import { useMessageContext } from '../context/MessageContext';
 
 export default function Register() {
   const usernameRef = useRef(null);
@@ -8,22 +12,23 @@ export default function Register() {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const [registrationMessage, setRegistrationMessage] = useState('');
-
-  useEffect(() => {
-    console.log(registrationMessage);
-  }, [registrationMessage]);
+  const { message, setMessage, success, setSuccess, showToast, setShowToast } = useMessageContext();
 
   const register = async (data) => {
     axios
       .post('register', data)
       .then(function (res) {
-        setRegistrationMessage(res.data);
+        setMessage(res.data);
+        setSuccess(true);
+        setShowToast(true);
+
+        setTimeout(() => (window.location.href = '/login'), 1500);
       })
-      .then((window.location.href = '/login'))
       .catch(function (err) {
         if (err.response) {
-          setRegistrationMessage(err.response.data.error);
+          setMessage(err.response.data.error);
+          setSuccess(false);
+          setShowToast(true);
         }
       });
   };
@@ -41,10 +46,23 @@ export default function Register() {
     register(userData);
   };
 
+  const renderToast = () => {
+    if (message && success && showToast && setShowToast) {
+      return (
+        <ToastMessage
+          showToast={showToast}
+          setShowToast={setShowToast}
+          success={success}
+          message={message}
+        />
+      );
+    }
+  };
+
   return (
     <div className='container register'>
       <h1>Register</h1>
-      <h1>{registrationMessage}</h1>
+      <h1>{message}</h1>
       <form className='g-2' onSubmit={handleSubmit}>
         <div className='mb-3'>
           <div className='mb-3'>
@@ -127,6 +145,7 @@ export default function Register() {
           </a>
         </div>
       </form>
+      {renderToast()}
     </div>
   );
 }

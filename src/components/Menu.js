@@ -3,11 +3,14 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import { useUserContext } from '../context/UserContext';
+import { useMessageContext } from '../context/MessageContext';
+
+import ToastMessage from './ToastMessage';
 
 export default function Menu() {
-  const { user, addToCart } = useUserContext();
+  const { user, addToCart, loading, setLoading } = useUserContext();
+  const { message, success, showToast, setShowToast } = useMessageContext();
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
     axios.get('/menu').then((res) => {
@@ -72,11 +75,23 @@ export default function Menu() {
     }
   };
 
+  const renderToast = () => {
+    if (message && success && showToast && setShowToast) {
+      return (
+        <ToastMessage
+          showToast={showToast}
+          setShowToast={setShowToast}
+          success={success}
+          message={message}
+        />
+      );
+    }
+  };
+
   return (
-    <div>
-      <div className='container'>
-        {loading ? <h1 className='text-center'>Loading...</h1> : isLoggedIn(user)}
-      </div>
+    <div className='container'>
+      {loading ? <h1 className='text-center'>Loading...</h1> : isLoggedIn(user)}
+      {renderToast()}
     </div>
   );
 }

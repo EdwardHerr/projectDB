@@ -3,9 +3,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import { useUserContext } from '../context/UserContext';
+import { useMessageContext } from '../context/MessageContext';
+
+import ToastMessage from './ToastMessage';
 
 export default function MenuItem() {
   const { addToCart } = useUserContext();
+  const { message, setMessage, success, setSuccess, showToast, setShowToast } = useMessageContext();
   const [menuItem, setMenuItem] = useState({});
   const [qty, setQty] = useState(1);
   const itemId = useParams();
@@ -20,14 +24,12 @@ export default function MenuItem() {
       .then((res) => {
         setMenuItem(res.data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setMessage(err.response.data.error);
+        setSuccess(false);
+        setShowToast(true);
+      });
   };
-
-  // const addToCart = (data) => {
-  //   axios.post('session', data).then((res) => {
-  //     console.log(res);
-  //   });
-  // };
 
   const handleAddToCartClick = async () => {
     const item = {
@@ -36,6 +38,19 @@ export default function MenuItem() {
     };
 
     addToCart(item);
+  };
+
+  const renderToast = () => {
+    if (message && success && showToast && setShowToast) {
+      return (
+        <ToastMessage
+          showToast={showToast}
+          setShowToast={setShowToast}
+          success={success}
+          message={message}
+        />
+      );
+    }
   };
 
   return (
@@ -74,6 +89,7 @@ export default function MenuItem() {
           </button>
         </div>
       </div>
+      {renderToast()}
     </div>
   );
 }
