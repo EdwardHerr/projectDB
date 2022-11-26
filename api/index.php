@@ -2,9 +2,6 @@
     $lifetime = 60 * 60 * 24 * 14;    // 2 weeks in seconds
     session_set_cookie_params($lifetime, '/');
     session_start();
-    if (empty($_SESSION['login'])) {
-        $_SESSION['login'] = false;
-    }
     if (empty($_SESSION['curr_user'])) {
         $_SESSION['curr_user'] = null;
     }
@@ -86,7 +83,6 @@
             $controller->processRequest();
             break;
         case "logout":
-            unset($_SESSION['login']);
             unset($_SESSION['curr_user']);
             unset($_SESSION['cart']);
             session_unset();
