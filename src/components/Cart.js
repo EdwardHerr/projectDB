@@ -3,13 +3,18 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 import { useUserContext } from '../context/UserContext';
+import { useMessageContext } from '../context/MessageContext';
 
 import Checkout from './Checkout';
+import ToastMessage from './ToastMessage';
 
 export default function Cart() {
   const { user, cart, setCart, loading } = useUserContext();
+  const { message, setMessage, success, setSuccess, showToast, setShowToast } = useMessageContext();
   const [menuItems, setMenuItems] = useState([]);
   const creditCardRef = useRef(null);
+  const expirationRef = useRef(null);
+  const securityRef = useRef(null);
 
   useEffect(() => {
     const fetchMenuItem = async (item) => {
@@ -24,15 +29,21 @@ export default function Cart() {
       );
     };
     if (cart) {
-      fetchAllMenuItems(cart).then((res) => {
-        setMenuItems([...res.map((item) => item.data)]);
-      });
+      fetchAllMenuItems(cart)
+        .then((res) => {
+          setMenuItems([...res.map((item) => item.data)]);
+        })
+        .catch((err) => {
+          setMessage('An error occurred');
+          setSuccess(false);
+          setShowToast(true);
+        });
     }
   }, [cart]);
 
   const handleDecrement = (e) => {
     e.preventDefault();
-    console.log(e.target.id);
+    console.log(cart[e.target.id]);
     setCart((prev) => {
       const newCart = [...prev];
       if (newCart[e.target.id].quantity > 0) {
@@ -41,6 +52,7 @@ export default function Cart() {
       return newCart;
     });
   };
+
   const handleIncrement = (e) => {
     e.preventDefault();
     setCart((prev) => {
@@ -52,21 +64,22 @@ export default function Cart() {
 
   const handleUpdate = async (e) => {
     if (cart && cart.length > 0) {
-      axios.post('/session/update', cart).then((res) => {
-        console.log(res.data);
-        setCart(() => res.data);
-      });
+      axios
+        .post('/session/update', cart)
+        .then((res) => {
+          console.log(res.data);
+          setCart(() => res.data);
+          setMessage('Cart Updated!');
+          setSuccess(true);
+          setShowToast(true);
+        })
+        .catch((err) => {
+          setMessage(err.response.data.error);
+          setSuccess(false);
+          setShowToast(true);
+        });
       console.log(cart);
     }
-  };
-
-  const emptyCart = async (e) => {
-    const data = [];
-    axios.post('/session/update', data).then((res) => {
-      console.log(res.data);
-      setCart(() => res.data);
-    });
-    console.log(cart);
   };
 
   const validateCreditCard = () => {
@@ -78,9 +91,24 @@ export default function Cart() {
       /^(5018|5081|5044|5020|5038|603845|6304|6759|676[1-3]|6799|6220|504834|504817|504645)[0-9]{8,15}$/,
       /^(?:2131|1800|35[0-9]{3})[0-9]{11}$/,
       /^3(?:0[0-5]|[68][0-9])[0-9]{11}$/,
+      /[0-9]{12}/, //just 12 numbers
     ];
+    const creditCard =
+      creditCardRef.current.value && regEx.some((regex) => regex.test(creditCardRef.current.value));
+    const expiration = expirationRef.current.value && expirationRef.current.value.length === 4;
+    const security =
+      securityRef.current.value &&
+      (securityRef.current.value.length === 3 || securityRef.current.value.length === 4);
 
-    return regEx.some((regex) => regex.test(creditCardRef.current.value));
+    return creditCard && expiration && security;
+  };
+
+  const emptyCart = async (e) => {
+    const data = [];
+    axios.post('/session/update', data).then((res) => {
+      console.log(res.data);
+      setCart(() => res.data);
+    });
   };
 
   const placeOrder = async (e) => {
@@ -94,17 +122,33 @@ export default function Cart() {
       axios
         .post('orders/', data)
         .then((res) => {
-          console.log(res.data);
-        })
-        .then(() => {
-          console.log(cart);
           emptyCart();
+          setMessage('Order Placed!');
+          setSuccess(true);
+          setShowToast(true);
         })
         .catch((err) => {
-          console.log(err.error.data);
+          setMessage(err.error.data);
+          setSuccess(false);
+          setShowToast(true);
         });
     } else {
-      console.log('Invalid Credit Card');
+      setMessage('Invalid Credit Card');
+      setSuccess(false);
+      setShowToast(true);
+    }
+  };
+
+  const renderToast = () => {
+    if (message && typeof success !== 'undefined' && showToast && setShowToast) {
+      return (
+        <ToastMessage
+          showToast={showToast}
+          setShowToast={setShowToast}
+          success={success}
+          message={message}
+        />
+      );
     }
   };
 
@@ -115,7 +159,7 @@ export default function Cart() {
       ) : (
         <div className='px-4 py-5 my-5 '>
           <h1 className='display-5 fw-bold text-center'>Shopping Cart</h1>
-          <div className='mx-auto my-5 row d-flex justify-content-center align-items-center'>
+          <div className='mx-auto my-5 row d-flex justify-content-center align-items-start'>
             <div className='col-lg-6'>
               <table className='table text-start'>
                 <thead>
@@ -132,7 +176,6 @@ export default function Cart() {
                     return (
                       <tbody key={key}>
                         <tr>
-                          {/* <td>{cart[key].productId}</td> */}
                           <td>{item.id}</td>
                           <td>{item.name}</td>
                           <td>{item.description}</td>
@@ -142,7 +185,6 @@ export default function Cart() {
                               <button
                                 className='btn btn-outline-secondary'
                                 onClick={handleDecrement}
-                                // id={String(cart[key].productId)}
                                 id={key}
                               >
                                 -
@@ -159,7 +201,6 @@ export default function Cart() {
                                 className='btn btn-outline-secondary'
                                 onClick={handleIncrement}
                                 id={key}
-                                // id={String(cart[key].productId)}
                               >
                                 +
                               </button>
@@ -182,7 +223,12 @@ export default function Cart() {
             </div>
             {cart && cart.length > 0 && (
               <div className='col-lg-6'>
-                <Checkout user={user} creditCardRef={creditCardRef} />
+                <Checkout
+                  user={user}
+                  creditCardRef={creditCardRef}
+                  expirationRef={expirationRef}
+                  securityRef={securityRef}
+                />
               </div>
             )}
             <div className='d-grid d-md-flex mx-auto my-5 gap-3 justify-content-end'>
@@ -201,6 +247,7 @@ export default function Cart() {
           </div>
         </div>
       )}
+      {renderToast()}
     </div>
   );
 }

@@ -1,6 +1,11 @@
 import React from 'react';
+import { IMaskInput } from 'react-imask';
 
-export default function Checkout({ user, creditCardRef }) {
+export default function Checkout({ user, creditCardRef, expirationRef, securityRef }) {
+  const CreditCardMask = '0000 0000 0000 0000';
+  const ExpiryMask = '00/00';
+  const SecurityCodeMask = '0000';
+
   const renderCheckout = () => {
     if (user) {
       return (
@@ -20,7 +25,6 @@ export default function Checkout({ user, creditCardRef }) {
                     defaultValue={user.firstName}
                     readOnly
                     disabled
-                    // ref={firstNameRef}
                   />
                 </div>
                 <div className='mb-3 col-md-6'>
@@ -35,7 +39,6 @@ export default function Checkout({ user, creditCardRef }) {
                     defaultValue={user.lastName}
                     readOnly
                     disabled
-                    // ref={lastNameRef}
                   />
                 </div>
               </div>
@@ -50,38 +53,56 @@ export default function Checkout({ user, creditCardRef }) {
                 defaultValue={user.address}
                 readOnly
                 disabled
-                // ref={emailRef}
               />
             </div>
             <div className='row'>
               <div className='col-md mb-3'>
                 <label htmlFor='cc-number'>Credit card number</label>
-                <input
+                <IMaskInput
+                  mask={CreditCardMask}
                   type='text'
                   className='form-control'
                   id='cc-number'
-                  placeholder=''
                   required
                   ref={creditCardRef}
+                  onAccept={(value, mask) => {
+                    creditCardRef.current.value = mask.unmaskedValue;
+                  }}
                 />
                 <div className='invalid-feedback'>Credit card number is required</div>
               </div>
             </div>
             <div className='row'>
               <div className='col-md-6 mb-3'>
-                <label htmlFor='cc-expiration'>Expiration</label>
-                <input
+                <label htmlFor='cc-expiration'>Expiration (MM/YY)</label>
+                <IMaskInput
+                  mask={ExpiryMask}
                   type='text'
+                  pattern='[0-9]*'
+                  inputMode='numeric'
                   className='form-control'
-                  id='cc-expiration'
-                  placeholder=''
+                  id='expiration'
                   required
+                  ref={expirationRef}
+                  onAccept={(value, mask) => {
+                    expirationRef.current.value = mask.unmaskedValue;
+                  }}
                 />
                 <div className='invalid-feedback'>Expiration date required</div>
               </div>
               <div className='col-md-6 mb-3'>
-                <label htmlFor='cc-expiration'>CVV</label>
-                <input type='text' className='form-control' id='cc-cvv' placeholder='' required />
+                <label htmlFor='cc-expiration'>Security Code</label>
+                <IMaskInput
+                  mask={SecurityCodeMask}
+                  type='text'
+                  className='form-control'
+                  id='security'
+                  required
+                  ref={securityRef}
+                  onAccept={(value, mask) => {
+                    securityRef.current.value = mask.unmaskedValue;
+                  }}
+                />
                 <div className='invalid-feedback'>Security code required</div>
               </div>
             </div>

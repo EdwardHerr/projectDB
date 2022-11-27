@@ -47,7 +47,7 @@ export default function Register() {
   };
 
   const renderToast = () => {
-    if (message && success && showToast && setShowToast) {
+    if (message && typeof success !== 'undefined' && showToast && setShowToast) {
       return (
         <ToastMessage
           showToast={showToast}
