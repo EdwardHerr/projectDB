@@ -72,7 +72,11 @@ export default function Navbar() {
       <nav className='navbar navbar-expand-lg bg-light'>
         <div className='container-fluid'>
           <a className='navbar-brand' href='/'>
-            Logo
+            <img
+               src='https://cdn-icons-png.flaticon.com/512/590/590897.png'
+               width = "40"
+               height = "40"
+            />
           </a>
           <button
             className='navbar-toggler'
