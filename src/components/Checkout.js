@@ -1,7 +1,7 @@
 import React from 'react';
 import { IMaskInput } from 'react-imask';
 
-export default function Checkout({ user, creditCardRef, expirationRef, securityRef }) {
+export default function Checkout({ user, firstNameRef, lastNameRef, addressRef, creditCardRef, expirationRef, securityRef }) {
   const CreditCardMask = '0000 0000 0000 0000';
   const ExpiryMask = '00/00';
   const SecurityCodeMask = '0000';
@@ -25,6 +25,7 @@ export default function Checkout({ user, creditCardRef, expirationRef, securityR
                     defaultValue={user.firstName}
                     readOnly
                     disabled
+                    ref={firstNameRef}
                   />
                 </div>
                 <div className='mb-3 col-md-6'>
@@ -39,6 +40,7 @@ export default function Checkout({ user, creditCardRef, expirationRef, securityR
                     defaultValue={user.lastName}
                     readOnly
                     disabled
+                    ref={lastNameRef}
                   />
                 </div>
               </div>
@@ -53,6 +55,7 @@ export default function Checkout({ user, creditCardRef, expirationRef, securityR
                 defaultValue={user.address}
                 readOnly
                 disabled
+                ref={addressRef}
               />
             </div>
             <div className='row'>

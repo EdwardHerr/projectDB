@@ -12,6 +12,9 @@ export default function Cart() {
   const { user, cart, setCart, loading } = useUserContext();
   const { message, setMessage, success, setSuccess, showToast, setShowToast } = useMessageContext();
   const [menuItems, setMenuItems] = useState([]);
+  const firstNameRef = useRef(null);
+  const lastNameRef = useRef(null);
+  const addressRef = useRef(null);
   const creditCardRef = useRef(null);
   const expirationRef = useRef(null);
   const securityRef = useRef(null);
@@ -99,8 +102,12 @@ export default function Cart() {
     const security =
       securityRef.current.value &&
       (securityRef.current.value.length === 3 || securityRef.current.value.length === 4);
+    const firstName = firstNameRef.current.value >= 1
+    const lastName = lastNameRef.current.value >= 1
+    const address = addressRef.current.value.length >= 1
+    
 
-    return creditCard && expiration && security;
+    return creditCard && expiration && security && firstName && lastName && address;
   };
 
   const emptyCart = async (e) => {
@@ -225,6 +232,9 @@ export default function Cart() {
               <div className='col-lg-6'>
                 <Checkout
                   user={user}
+                  firstNameRef={firstNameRef}
+                  lastNameRef={lastNameRef}
+                  addressRef={addressRef}
                   creditCardRef={creditCardRef}
                   expirationRef={expirationRef}
                   securityRef={securityRef}

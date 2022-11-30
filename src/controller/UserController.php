@@ -47,6 +47,16 @@ class UserController {
         if ($res) {
             $response['status_code_header'] = 'HTTP/1.1 200 OK';
             $body = "Update successful!";
+            // update user in session
+            $currUser = UserDB::getUserById($this->userId);
+            $new_user = array('id' => $currUser['id'],
+                          'username' => $currUser['username'],
+                          'firstName' => $currUser['firstName'],
+                          'lastName' => $currUser['lastName'],
+                          'email' => $currUser['email'],
+                          'address' => $currUser['address']);
+            $_SESSION['curr_user'] = $new_user;
+            
         } else {
             $response['status_code_header'] = 'HTTP/1.1 400 Bad Request';
             $body = json_encode([
