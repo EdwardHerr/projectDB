@@ -13,7 +13,7 @@ class ProductDB {
             $row = $statement->fetch();
             $statement->closeCursor();
             
-            $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'listPrice' => $row['listPrice']);
+            $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'image' => $row['image'], 'listPrice' => $row['listPrice']);
             return $product;
         } catch (PDOException $e) {
             return $e;
@@ -31,7 +31,7 @@ class ProductDB {
             $statement->closeCursor();
             $products = [];
             foreach ($rows as $row) {
-                $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'listPrice' => $row['listPrice']);
+                $product = array('id' => $row['id'], 'name' => $row['name'], 'description' => $row['description'], 'image' => $row['image'], 'listPrice' => $row['listPrice']);
                 $products[] = $product;
             }
             return $products;

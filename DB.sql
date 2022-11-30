@@ -19,6 +19,7 @@ CREATE TABLE Products(
   name VARCHAR(100) NOT NULL,
   description VARCHAR(255) NOT NULL,
   listPrice DECIMAL(5,2),
+  image VARCHAR(255),
   PRIMARY KEY (id)
 );
 CREATE TABLE UserOrders(
@@ -38,72 +39,70 @@ CREATE TABLE Orders(
   FOREIGN KEY (userOrderID) REFERENCES UserOrders(id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-CREATE TABLE CreditCards (
-  id INT NOT NULL AUTO_INCREMENT,
-  userID INT NOT NULL,
-  firstName VARCHAR(30) NOT NULL,
-  lastName VARCHAR(30) NOT NULL,
-  cardType VARCHAR(20) NOT NULL,
-  cardNumber BIGINT NOT NULL,
-  expiryDate DATETIME NOT NULL,
-  billingAddresss VARCHAR(255) NOT NULL,
-  FOREIGN KEY (userID) REFERENCES Users(id) ON UPDATE CASCADE ON DELETE RESTRICT,
-  PRIMARY KEY (id)
-);
 -- create the users
 CREATE USER IF NOT EXISTS db_user @localhost IDENTIFIED BY 'pa55word';
 GRANT ALL PRIVILEGES ON * TO 'db_user' @'localhost';
 
 -- insert products --
-INSERT INTO Products (name, description, listPrice)
+INSERT INTO Products (name, description, image, listPrice)
 VALUES (
     'Chicken Alfredo',
     'Pasta with grilled chicken and alfredo sauce',
+    'ChickenAlfredo.jpg',
     24.99
   ),
   (
     'Chicken Parmgiana',
     'Two lightly fried parmesan-breaded chicken breasts are smothered with homemade marinara sauce and melted Italian cheeses',
+    'ChickenAlfredo.jpg',
     23.79
   ),
   (
     'Spaghetti and Meatballs',
     'Classic spaghetti with bolognese sauce and meatballs',
+    'ChickenAlfredo.jpg',
     21.99
   ),
   (
     'Seafood Alfredo',
     'Fettuccine with creamy, alfredo sauce with shrimp and scallops',
+    'ChickenAlfredo.jpg',
     27.99
   ),
   (
     'Shrimp Scampi',
     'Shrimp sauteed in a garlic sauce, tossed with asparagus, tomatoes and angel hair',
+    'ChickenAlfredo.jpg',
     24.29
   ),
   (
     'Shrimp Alfredo',
     'Pasta with grilled shrimp and alfredo sauce',
+    'ChickenAlfredo.jpg',
     24.99
   ),
   (
     'Chicken and Shrimp Carbonara',
     'Spaghetti and carbonara with bacon bits, grilled chicken and shrimp',
+    'ChickenAlfredo.jpg',
     26.99
   ),
   (
     'Ravioli Carbonara',
     'Cheese ravioli baked in a creamy sauce with bacon, topped with a blend of Italian cheeses',
+    'ChickenAlfredo.jpg',
     24.99
   ),
   (
     'Chicken Tortelloni Alfredo',
     'Asiago cheese-filled tortelloni baked in alfredo and toasted breadcrumbs, topped with sliced grilled chicken',
+    'ChickenAlfredo.jpg',
     24.99
   ),
   (
     'Grilled Chicken Margherita',
     'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce',
+    'ChickenAlfredo.jpg',
     23.99
   );
   
@@ -123,26 +122,6 @@ VALUES (
     'Doe',
     'janedoe@yahoo.com',
     'testpass2',
-    'Surrey BC, 321 Street, 4321'
-  );
--- create the credit cards --
-INSERT INTO CreditCards (userID, firstName, lastName, cardType, cardNumber, expiryDate, billingAddresss)
-VALUES(
-    1,
-    'John',
-    'Doe',
-    'Visa',
-    123456789012,
-    '2022-11-16',
-    'Surrey BC, 123 Street, 1234'
-  ),
-  (
-    2,
-    'Jane',
-    'Doe',
-    'Mastercard',
-    098765432123,
-    '2022-11-16',
     'Surrey BC, 321 Street, 4321'
   );
 
