@@ -52,9 +52,9 @@ export default function MenuItem() {
       );
     }
   };
-
   return (
     <div className='container col-sm-4 mb-5'>
+      <img className='img-fluid rounded mx-auto d-block' src={menuItem.image} alt={menuItem.name} />
       <h1>{menuItem.name}</h1>
       <p>{menuItem.description}</p>
       <p>{menuItem.listPrice}</p>
