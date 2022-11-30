@@ -48,61 +48,61 @@ INSERT INTO Products (name, description, image, listPrice)
 VALUES (
     'Chicken Alfredo',
     'Pasta with grilled chicken and alfredo sauce',
-    'ChickenAlfredo.jpg',
+    'https://www.foodnetwork.com/content/dam/images/food/fullset/2015/9/15/1/FNK_Chicken-Fettucine-Alfredo_s4x3.jpg',
     24.99
   ),
   (
     'Chicken Parmgiana',
     'Two lightly fried parmesan-breaded chicken breasts are smothered with homemade marinara sauce and melted Italian cheeses',
-    'ChickenAlfredo.jpg',
+    'https://images.immediate.co.uk/production/volatile/sites/30/2020/12/Chicken-parmigiana-c13fae7.jpg',
     23.79
   ),
   (
     'Spaghetti and Meatballs',
     'Classic spaghetti with bolognese sauce and meatballs',
-    'ChickenAlfredo.jpg',
+    'https://d167y3o4ydtmfg.cloudfront.net/369/studio/assets/v1545739412935_460423375/Spaghetti%20and%20Meatballs.jpg',
     21.99
   ),
   (
     'Seafood Alfredo',
     'Fettuccine with creamy, alfredo sauce with shrimp and scallops',
-    'ChickenAlfredo.jpg',
+    'https://tmbidigitalassetsazure.blob.core.windows.net/rms3-prod/attachments/37/1200x1200/Seafood-Fettuccine-Alfredo_EXPS_DIYDAP22_33885_DR_03_02_1b.jpg',
     27.99
   ),
   (
     'Shrimp Scampi',
     'Shrimp sauteed in a garlic sauce, tossed with asparagus, tomatoes and angel hair',
-    'ChickenAlfredo.jpg',
+    'https://www.cookingclassy.com/wp-content/uploads/2019/07/shrimp-scampi-02.jpg',
     24.29
   ),
   (
     'Shrimp Alfredo',
     'Pasta with grilled shrimp and alfredo sauce',
-    'ChickenAlfredo.jpg',
+    'https://www.dinneratthezoo.com/wp-content/uploads/2018/06/shrimp-alfredo-6-500x500.jpg',
     24.99
   ),
   (
     'Chicken and Shrimp Carbonara',
     'Spaghetti and carbonara with bacon bits, grilled chicken and shrimp',
-    'ChickenAlfredo.jpg',
+    'https://imhungryforthat.com/wp-content/uploads/2021/12/chicken-and-shrimp-carbonara-olive-garden.jpg',
     26.99
   ),
   (
     'Ravioli Carbonara',
     'Cheese ravioli baked in a creamy sauce with bacon, topped with a blend of Italian cheeses',
-    'ChickenAlfredo.jpg',
+    'https://rms.condenast.it/rms/public/5d3/f02/6a3/thumb_425_1200_670_0_0_auto.jpg',
     24.99
   ),
   (
     'Chicken Tortelloni Alfredo',
     'Asiago cheese-filled tortelloni baked in alfredo and toasted breadcrumbs, topped with sliced grilled chicken',
-    'ChickenAlfredo.jpg',
+    'https://media.olivegarden.com/en_us/images/product/asiago-tortelloni-alfredo-with-grilled-chicken-dpv-1180x730.png',
     24.99
   ),
   (
     'Grilled Chicken Margherita',
     'Grilled chicken breasts with fresh tomatoes, mozzarella, basil pesto and a lemon garlic sauce',
-    'ChickenAlfredo.jpg',
+    'https://www.lecremedelacrumb.com/wp-content/uploads/2017/07/grilled-chicken-margherita-101-2.jpg',
     23.99
   );
   
