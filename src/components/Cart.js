@@ -102,10 +102,9 @@ export default function Cart() {
     const security =
       securityRef.current.value &&
       (securityRef.current.value.length === 3 || securityRef.current.value.length === 4);
-    const firstName = firstNameRef.current.value >= 1
-    const lastName = lastNameRef.current.value >= 1
+    const firstName = firstNameRef.current.value.length >= 1
+    const lastName = lastNameRef.current.value.length >= 1
     const address = addressRef.current.value.length >= 1
-    
 
     return creditCard && expiration && security && firstName && lastName && address;
   };

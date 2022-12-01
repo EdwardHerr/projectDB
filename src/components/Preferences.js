@@ -135,7 +135,7 @@ export default function Preferences() {
             />
           </div>
           <div className='col-12'>
-            <a href='#' className='mx-3'>
+            <a href='/' className='mx-3'>
               Cancel
             </a>
             <button type='submit' className='btn btn-primary'>
