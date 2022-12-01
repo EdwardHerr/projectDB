@@ -1,17 +1,6 @@
 <?php
 
 class UserDB {
-
- private static function loadUser($row) {
-     $user = new User($row['username'],
-                      $row['password'],
-                      $row['firstName'],
-                      $row['lastName'],
-                      $row['email'],
-                      $row['address']);
-    return $user;
- }
-    
  public static function getUser($username) {
         $db = Database::getDB();
         $query = 'SELECT id, username, password, firstName, lastName, 
@@ -22,19 +11,41 @@ class UserDB {
             $statement = $db->prepare($query);
             $statement->bindValue(':username', $username);
             $statement->execute();
-            
             $row = $statement->fetch();
             $statement->closeCursor();
             
-            // return self::loadUser($row);
             return $row;
         } catch (PDOException $e) {
-            // Database::displayError($e->getMessage());
             return $e;
         }
     }
 
-    public static function addUser($user) {
+public static function getUserById($userId) {
+        $db = Database::getDB();
+        $query = 'SELECT username, password, firstName, lastName, 
+                     email, address 
+                  FROM Users
+                  WHERE id = :id';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $userId);
+            $statement->execute();
+            $row = $statement->fetch();
+            $statement->closeCursor();
+            $user = array('id' => $userId,
+                          'username' => $row['username'],
+                          'password' => $row['password'],
+                          'firstName' => $row['firstName'],
+                          'lastName' => $row['lastName'],
+                          'email' => $row['email'],
+                          'address' => $row['address']);
+            return $user;
+        } catch (PDOException $e) {
+            return $e;
+        }
+    }    
+
+    public static function addUser($username, $firstName, $lastName, $email, $password, $address = "") {
         $db = Database::getDB();
         $query = 'INSERT INTO Users
                     (username, password, firstName, lastName,
@@ -43,48 +54,42 @@ class UserDB {
                     (:username, :password, :firstName, :lastName,
                      :email, :address)';
        try {
-           $statement = $db->prepare($query);
-           $statement->bindValue(':username', $user->getUserName());
-           $statement->bindValue(':password', $user->getPassword());
-           $statement->bindValue(':firstName', $user->getFirstName());
-           $statement->bindValue(':lastName', $user->getLastName());
-           $statement->bindValue(':email', $user->getEmail());
-           $statement->bindValue(':address', $user->getAddress());
-           $statement->execute();
-           $statement->closeCursor();
-
-           
-        //   return $user->getUserName();
+            $statement = $db->prepare($query);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':password', $password);
+            $statement->bindValue(':firstName', $firstName);
+            $statement->bindValue(':lastName', $lastName);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':address', $address);
+            $statement->execute();
+            $statement->closeCursor();
             return true;
        } catch (PDOException $e) {
-        //   Database::displayError($e->getMessage());
             return false;
        }
     }
     
-    public static function updateUser($user) {
+    public static function updateUser($id, $username, $firstName, $lastName, $email, $password, $address) {
         $db = Database::getDB();
         $query = 'UPDATE Users
-                  SET username = :username, firstName = :firstName,
-                      lastName = :lastName, email = :email,
-                      address = :address, password = :password
-                  WHERE id = :id';
+                  SET username=:username, firstName=:firstName,
+                    lastName=:lastName, email=:email, password=:password,
+                    address=:address
+                  WHERE id=:id';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':username', $user->getID());
-            $statement->bindValue(':username', $user->getUserName());
-            $statement->bindValue(':password', $user->getPassword());
-            $statement->bindValue(':firstName', $user->getFirstName());
-            $statement->bindValue(':lastName', $user->getLastName());
-            $statement->bindValue(':email', $user->getEmail());
-            $statement->bindValue(':address', $user->getAddress());
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':username', $username);
+            $statement->bindValue(':password', $password);
+            $statement->bindValue(':firstName', $firstName);
+            $statement->bindValue(':lastName', $lastName);
+            $statement->bindValue(':email', $email);
+            $statement->bindValue(':address', $address);
             $statement->execute();
-            
-            $row_count = $statement->rowCount();
             $statement->closeCursor();
-            return $row_count;
+            return true;
         } catch (PDOException $e) {
-            Database::displayError($e->getMessage());
+            return false;
         }
     }
 }

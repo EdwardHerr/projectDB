@@ -56,9 +56,7 @@ class LoginController {
     }
 
     private function loginSuccess($input) {
-        $_SESSION['login'] = true;
         $currUser = UserDB::getUser($input->username);
-        // return $currUser;
         $new_user = array('id' => $currUser['id'],
                           'username' => $currUser['username'],
                           'firstName' => $currUser['firstName'],

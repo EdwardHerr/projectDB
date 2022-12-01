@@ -1,7 +1,11 @@
 import './styles/App.css';
-import { React, useState, useEffect } from 'react';
+import { React } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import axios from 'axios';
+
+// Context
+import { UserContextProvider } from './context/UserContext';
+import { MessageContextProvider } from './context/MessageContext';
+
 // Components
 import Home from './components/Home';
 import Navbar from './components/Navbar';
@@ -9,37 +13,33 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Menu from './components/Menu';
 import MenuItem from './components/MenuItem';
+import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 import Orders from './components/Orders';
+import OrderDetails from './components/OrderDetails';
 import Preferences from './components/Preferences';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(true);
-  const [user, setUser] = useState({});
-
-  const fetchData = async () => {
-    return axios.get('session').then((res) => {
-      setLoggedIn(res.data.login);
-      setUser(res.data.curr_user);
-    });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, [loggedIn]);
-
   return (
     <div className='App'>
-      <Navbar loggedIn={loggedIn} user={user} />
-      <Routes>
-        <Route path='/' element={<Home loggedIn={loggedIn} user={user} />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/menu' element={<Menu loggedIn={loggedIn} />} />
-        <Route path='/menu/:id' element={<MenuItem />} />
-        <Route path='/orders' element={<Orders loggedIn={loggedIn} />} />
-        <Route path='/preferences' element={<Preferences loggedIn={loggedIn} />} />
-        <Route path='*' element={<Navigate to='/' />} />
-      </Routes>
+      <MessageContextProvider>
+        <UserContextProvider>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/menu' element={<Menu />} />
+            <Route path='/menu/:id' element={<MenuItem />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/checkout' element={<Checkout />} />
+            <Route path='/orders' element={<Orders />} />
+            <Route path='/orders/:id' element={<OrderDetails />} />
+            <Route path='/preferences' element={<Preferences />} />
+            <Route path='*' element={<Navigate to='/' />} />
+          </Routes>
+        </UserContextProvider>
+      </MessageContextProvider>
     </div>
   );
 }

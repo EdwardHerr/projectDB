@@ -1,7 +1,11 @@
-import React from 'react';
+import { React } from 'react';
 import axios from 'axios';
 
-export default function Navbar({ loggedIn, user }) {
+import { useUserContext } from '../context/UserContext';
+
+export default function Navbar() {
+  const { user } = useUserContext();
+
   const logout = async () => {
     axios.get('logout').then((window.location.href = '/'));
   };
@@ -10,12 +14,69 @@ export default function Navbar({ loggedIn, user }) {
     logout();
   };
 
+  const isLoggedIn = (user) => {
+    if (!user) {
+      return (
+        <li className='nav-item'>
+          <a className='nav-link' aria-current='page' href='/login'>
+            Login
+          </a>
+        </li>
+      );
+    } else {
+      return (
+        <>
+          <li className='nav-item'>
+            <a className='nav-link' href='/cart'>
+              My Cart
+            </a>
+          </li>
+          <li className='nav-item dropdown'>
+            <a
+              className='nav-link dropdown-toggle'
+              href='#'
+              role='button'
+              data-bs-toggle='dropdown'
+              aria-expanded='false'
+            >
+              My Account
+            </a>
+            <ul className='dropdown-menu'>
+              <li>
+                <a className='dropdown-item' href='/orders'>
+                  Past Orders
+                </a>
+              </li>
+              <li>
+                <a className='dropdown-item' href='/preferences'>
+                  Preferences
+                </a>
+              </li>
+              <li>
+                <hr className='dropdown-divider' />
+              </li>
+              <li>
+                <button className='dropdown-item' onClick={handleClick}>
+                  Log Out
+                </button>
+              </li>
+            </ul>
+          </li>
+        </>
+      );
+    }
+  };
+
   return (
     <div className='mb-5'>
       <nav className='navbar navbar-expand-lg bg-light'>
         <div className='container-fluid'>
           <a className='navbar-brand' href='/'>
-            Logo
+            <img
+               src='https://cdn-icons-png.flaticon.com/512/590/590897.png'
+               width = "40"
+               height = "40"
+            />
           </a>
           <button
             className='navbar-toggler'
@@ -40,45 +101,7 @@ export default function Navbar({ loggedIn, user }) {
                   Menu
                 </a>
               </li>
-              {loggedIn ? (
-                <li className='nav-item dropdown'>
-                  <a
-                    className='nav-link dropdown-toggle'
-                    href='#'
-                    role='button'
-                    data-bs-toggle='dropdown'
-                    aria-expanded='false'
-                  >
-                    My Account
-                  </a>
-                  <ul className='dropdown-menu'>
-                    <li>
-                      <a className='dropdown-item' href='/orders'>
-                        Past Orders
-                      </a>
-                    </li>
-                    <li>
-                      <a className='dropdown-item' href='/preferences'>
-                        Preferences
-                      </a>
-                    </li>
-                    <li>
-                      <hr className='dropdown-divider' />
-                    </li>
-                    <li>
-                      <button className='dropdown-item' onClick={handleClick}>
-                        Log Out
-                      </button>
-                    </li>
-                  </ul>
-                </li>
-              ) : (
-                <li className='nav-item'>
-                  <a className='nav-link' aria-current='page' href='/login'>
-                    Login
-                  </a>
-                </li>
-              )}
+              {isLoggedIn(user)}
             </ul>
           </div>
         </div>

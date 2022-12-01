@@ -1,25 +1,28 @@
-import { React, useState, useEffect, useRef } from 'react';
+import { React, useRef } from 'react';
 import axios from 'axios';
+
+import ToastMessage from './ToastMessage';
+
+import { useMessageContext } from '../context/MessageContext';
 
 export default function Login() {
   const usernameRef = useRef();
   const passwordRef = useRef();
-  const [loginMessage, setLoginMessage] = useState('');
-
-  useEffect(() => {
-    console.log(loginMessage);
-  }, [loginMessage]);
+  const { message, setMessage, success, setSuccess, showToast, setShowToast } = useMessageContext();
 
   const login = async (data) => {
     axios
       .post('login', data)
       .then(function (res) {
-        setLoginMessage((curr) => res.data);
+        setMessage(res.data);
+        setSuccess(true);
+        setShowToast(true);
+
+        setTimeout(() => (window.location.href = '/'), 1500);
       })
-      .then((window.location.href = '/'))
       .catch(function (err) {
-        console.log(err.response.data.error);
-        setLoginMessage((curr) => err.response.data.error);
+        setMessage(err.response.data.error);
+        setShowToast(true);
       });
   };
 
@@ -29,14 +32,25 @@ export default function Login() {
       username: usernameRef.current.value,
       inputPassword: passwordRef.current.value,
     };
-    console.log(loginInfo);
     login(loginInfo);
+  };
+
+  const renderToast = () => {
+    if (message && typeof success !== 'undefined' && showToast && setShowToast) {
+      return (
+        <ToastMessage
+          showToast={showToast}
+          setShowToast={setShowToast}
+          success={success}
+          message={message}
+        />
+      );
+    }
   };
 
   return (
     <div className='container login'>
       <h1>Welcome back!</h1>
-      <h1>{loginMessage}</h1>
       <form className='g-2' onSubmit={handleSubmit}>
         <div className='mb-3'>
           <label for='username' className='form-label'>
@@ -65,6 +79,7 @@ export default function Login() {
           </button>
         </div>
       </form>
+      {renderToast()}
     </div>
   );
 }
