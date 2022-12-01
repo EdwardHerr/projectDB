@@ -29,7 +29,7 @@
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-
+- Web Server (e.g. Apache)
 - npm
   ```sh
   npm install npm@latest -g
@@ -37,11 +37,15 @@ To get a local copy up and running follow these simple example steps.
 
 ### Installation
 
-1. Clone the repo
+1. Move to the /var/www/html directory
+   ```sh
+   cd /var/www/html
+   ```
+2. Clone the repo
    ```sh
    git clone https://github.com/EdwardHerr/projectDB.git
    ```
-2. Install NPM packages
+3. Install NPM packages
    ```sh
    npm install
    ```
